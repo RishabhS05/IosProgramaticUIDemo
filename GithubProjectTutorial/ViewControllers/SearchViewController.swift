@@ -12,12 +12,13 @@ class SearchViewController: UIViewController {
     let logoImageView = UIImageView()
     let usernameTextfield =  GptTextField()
     let callToActionButton = GptButton(backgroundColor : .systemGreen, title : "Get Followers")
-    
+    var isUsernameEntered : Bool { return !usernameTextfield.text!.isEmpty }
     override func viewDidLoad() {
         super.viewDidLoad()
         view.backgroundColor = .systemBackground
         viewConfiguration()
     }
+
     
     func viewConfiguration(){
         configureLogoImageView()
@@ -27,7 +28,7 @@ class SearchViewController: UIViewController {
     }
     override func viewWillAppear(_ animated: Bool) {
          super.viewWillAppear(animated)
-        navigationController?.isNavigationBarHidden = true
+        navigationController?.setNavigationBarHidden(false, animated:true)
 
     }
     func createOnTapDismissKeyboard(){
@@ -49,6 +50,8 @@ class SearchViewController: UIViewController {
     
     func configureTextField(){
         view.addSubview(usernameTextfield)
+        usernameTextfield.delegate = self
+        
         NSLayoutConstraint.activate([
             usernameTextfield.topAnchor.constraint(equalTo: logoImageView.bottomAnchor,constant: 48),
             usernameTextfield.leadingAnchor.constraint(equalTo: view.leadingAnchor , constant: 50),
@@ -69,11 +72,18 @@ class SearchViewController: UIViewController {
     }
     
     @objc func followerListCall(){
-        
+        guard isUsernameEntered else { 
+      presentGptAlertOnMainThread(title: "Enter Username", message: "Please Enter a username.", buttonTitle: "Ok")
+            return
+        }
+       let followerListVC = FollowersViewController()
+        followerListVC.username = usernameTextfield.text
+        followerListVC.title = usernameTextfield.text
+        navigationController?.pushViewController(followerListVC, animated: true)
     }
 }
   
-extension SearchViewController : UISearchTextFieldDelegate {
+extension SearchViewController : UITextFieldDelegate {
   
     func textFieldShouldReturn(_ textField: UITextField) -> Bool {
         // network call
