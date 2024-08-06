@@ -1,13 +1,13 @@
 //
-//  FavoritesViewController.swift
+//  ViewController+ext.swift
 //  GithubProjectTutorial
 //
-//  Created by Rishabh Shrivastava on 31/07/24.
+//  Created by Rishabh Shrivastava on 04/08/24.
 //
 
 import UIKit
 
-class FavoritesListViewController: UIViewController {
+class ViewController_ext: UIViewController {
 
     override func viewDidLoad() {
         super.viewDidLoad()

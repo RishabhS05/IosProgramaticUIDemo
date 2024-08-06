@@ -1,13 +1,13 @@
 //
-//  SearchViewController.swift
+//  FollowersViewController.swift
 //  GithubProjectTutorial
 //
-//  Created by Rishabh Shrivastava on 31/07/24.
+//  Created by Rishabh Shrivastava on 02/08/24.
 //
 
 import UIKit
 
-class SearchViewController: UIViewController {
+class FollowersViewController: UIViewController {
 
     override func viewDidLoad() {
         super.viewDidLoad()
