@@ -7,7 +7,7 @@
 
 import Foundation
 
-enum ErrorMessages : String // raw values
+enum GPTError : String , Error // raw values
 {
     case usernameInvalid  = "This username created invalid request. Please try again"
     case checkInternet    = "Unable to call api please chack the internet connection."
