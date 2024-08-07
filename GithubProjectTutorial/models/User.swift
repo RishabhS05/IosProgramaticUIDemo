@@ -7,7 +7,7 @@
 
 import Foundation
 
-struct User : Codable {
+struct User : Codable, Hashable {
     var login : String
     var avatarUrl : String
     var name : String?
@@ -19,4 +19,8 @@ struct User : Codable {
     var following : Int
     var followers : Int
     var createdAt : String
+    func hash(into hasher: inout Hasher) {
+        hasher.combine(login)
+        hasher.combine(createdAt)
+    }
 }

@@ -23,7 +23,9 @@
 		637866362C62C70300F0B56E /* Follower.swift in Sources */ = {isa = PBXBuildFile; fileRef = 637866352C62C70300F0B56E /* Follower.swift */; };
 		637866382C62C84D00F0B56E /* User.swift in Sources */ = {isa = PBXBuildFile; fileRef = 637866372C62C84D00F0B56E /* User.swift */; };
 		6378663B2C62CD8D00F0B56E /* NetworkManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6378663A2C62CD8D00F0B56E /* NetworkManager.swift */; };
-		6378663E2C62E15200F0B56E /* ErrorMessages.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6378663D2C62E15200F0B56E /* ErrorMessages.swift */; };
+		6378663E2C62E15200F0B56E /* GPTError.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6378663D2C62E15200F0B56E /* GPTError.swift */; };
+		637866442C62F05700F0B56E /* FollowersCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 637866432C62F05700F0B56E /* FollowersCell.swift */; };
+		637866472C62F21900F0B56E /* GptImageView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 637866462C62F21900F0B56E /* GptImageView.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -45,7 +47,9 @@
 		637866352C62C70300F0B56E /* Follower.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Follower.swift; sourceTree = "<group>"; };
 		637866372C62C84D00F0B56E /* User.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = User.swift; sourceTree = "<group>"; };
 		6378663A2C62CD8D00F0B56E /* NetworkManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NetworkManager.swift; sourceTree = "<group>"; };
-		6378663D2C62E15200F0B56E /* ErrorMessages.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ErrorMessages.swift; sourceTree = "<group>"; };
+		6378663D2C62E15200F0B56E /* GPTError.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GPTError.swift; sourceTree = "<group>"; };
+		637866432C62F05700F0B56E /* FollowersCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FollowersCell.swift; sourceTree = "<group>"; };
+		637866462C62F21900F0B56E /* GptImageView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GptImageView.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -96,10 +100,11 @@
 		637866222C59E35200F0B56E /* widgets */ = {
 			isa = PBXGroup;
 			children = (
-				637866232C59E3AC00F0B56E /* GptButton.swift */,
+				637866422C62EFE800F0B56E /* labels */,
+				637866412C62EFC300F0B56E /* buttons */,
+				637866402C62EFB400F0B56E /* cells */,
 				637866252C59E90700F0B56E /* GptTextField.swift */,
-				6378662A2C5D14DD00F0B56E /* GptTitleLabel.swift */,
-				6378662C2C5D181F00F0B56E /* GptBodyLabel.swift */,
+				637866462C62F21900F0B56E /* GptImageView.swift */,
 			);
 			path = widgets;
 			sourceTree = "<group>";
@@ -143,9 +148,34 @@
 		6378663C2C62E13600F0B56E /* utils */ = {
 			isa = PBXGroup;
 			children = (
-				6378663D2C62E15200F0B56E /* ErrorMessages.swift */,
+				6378663D2C62E15200F0B56E /* GPTError.swift */,
 			);
 			path = utils;
+			sourceTree = "<group>";
+		};
+		637866402C62EFB400F0B56E /* cells */ = {
+			isa = PBXGroup;
+			children = (
+				637866432C62F05700F0B56E /* FollowersCell.swift */,
+			);
+			path = cells;
+			sourceTree = "<group>";
+		};
+		637866412C62EFC300F0B56E /* buttons */ = {
+			isa = PBXGroup;
+			children = (
+				637866232C59E3AC00F0B56E /* GptButton.swift */,
+			);
+			path = buttons;
+			sourceTree = "<group>";
+		};
+		637866422C62EFE800F0B56E /* labels */ = {
+			isa = PBXGroup;
+			children = (
+				6378662A2C5D14DD00F0B56E /* GptTitleLabel.swift */,
+				6378662C2C5D181F00F0B56E /* GptBodyLabel.swift */,
+			);
+			path = labels;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -220,15 +250,17 @@
 			files = (
 				637866382C62C84D00F0B56E /* User.swift in Sources */,
 				6378661F2C59D9F900F0B56E /* SearchViewController.swift in Sources */,
+				637866472C62F21900F0B56E /* GptImageView.swift in Sources */,
 				6378660B2C59A29800F0B56E /* AppDelegate.swift in Sources */,
 				637866292C5C44D200F0B56E /* FollowersViewController.swift in Sources */,
 				6378662D2C5D181F00F0B56E /* GptBodyLabel.swift in Sources */,
 				637866312C5F37E900F0B56E /* ViewController+ext.swift in Sources */,
 				6378662B2C5D14DD00F0B56E /* GptTitleLabel.swift in Sources */,
 				6378662F2C5D19F600F0B56E /* GptAlertViewController.swift in Sources */,
-				6378663E2C62E15200F0B56E /* ErrorMessages.swift in Sources */,
+				6378663E2C62E15200F0B56E /* GPTError.swift in Sources */,
 				637866362C62C70300F0B56E /* Follower.swift in Sources */,
 				637866212C59DAB900F0B56E /* FavoritesListViewController.swift in Sources */,
+				637866442C62F05700F0B56E /* FollowersCell.swift in Sources */,
 				6378663B2C62CD8D00F0B56E /* NetworkManager.swift in Sources */,
 				637866242C59E3AC00F0B56E /* GptButton.swift in Sources */,
 				6378660D2C59A29800F0B56E /* SceneDelegate.swift in Sources */,
