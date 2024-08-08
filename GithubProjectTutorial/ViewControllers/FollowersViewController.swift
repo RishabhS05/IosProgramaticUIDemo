@@ -52,21 +52,12 @@ class FollowersViewController: UIViewController {
         // work fine without any warning.
         self.dataSource.apply( snapshot,animatingDifferences: true)
     }
-    
-    func create3columnFlowLayput() -> UICollectionViewFlowLayout {
-        let width = view.bounds.width
-        let padding : CGFloat = 12
-        let mininumItemSpace : CGFloat = 10
-        let availableWidth = width - (padding * 2) - (mininumItemSpace * 2)
-        let itemwidth = availableWidth / 3
-        let flowLayout  = UICollectionViewFlowLayout()
-        flowLayout.sectionInset = UIEdgeInsets(top: padding, left: padding, bottom: padding, right: padding)
-        flowLayout.itemSize  = CGSize(width: itemwidth, height: itemwidth + 40 )
-        return flowLayout
-    }
+
     func getFollowers(){ // api call
-        NetworkManager.shared.getFollowers(for: username, page: 100){
+        NetworkManager.shared.getFollowers(for: username, page: 100){ [weak self]
           result in
+            // as weak object is always optional so to by pass this we use guard statement.
+            guard let self = self else { return }
             switch (result){
             case .success(let followers):
                 self.followers = followers
@@ -78,11 +69,10 @@ class FollowersViewController: UIViewController {
     }
     
     func configureCollectionView(){
-        collectionView = UICollectionView(frame: view.bounds, collectionViewLayout: create3columnFlowLayput())
+        collectionView = UICollectionView(frame: view.bounds, collectionViewLayout: Uihelper.create3columnFlowLayput(in : view))
         view.addSubview(collectionView)
         collectionView.backgroundColor = .systemBackground
         collectionView?.register(FollowersCell.self, forCellWithReuseIdentifier: FollowersCell.reuserId)
-        
     }
 
 }
