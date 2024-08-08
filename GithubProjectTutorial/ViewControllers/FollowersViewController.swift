@@ -11,6 +11,8 @@ class FollowersViewController: UIViewController {
     var  username: String!
     var collectionView : UICollectionView! //
     var followers : [Follower] = []
+    var page : Int  = 1
+    var hasMoreFollowers = true
     enum Section {// enums are by default hashable
         case main
      }
@@ -20,7 +22,7 @@ class FollowersViewController: UIViewController {
         super.viewDidLoad()
         configureViewController()
         configureCollectionView()
-        getFollowers()
+        getFollowers(page: page)
         configureDataSource()
     }
     
@@ -53,14 +55,15 @@ class FollowersViewController: UIViewController {
         self.dataSource.apply( snapshot,animatingDifferences: true)
     }
 
-    func getFollowers(){ // api call
-        NetworkManager.shared.getFollowers(for: username, page: 100){ [weak self]
+    func getFollowers(page : Int){ // api call
+        NetworkManager.shared.getFollowers(for: username, page: page){ [weak self]
           result in
             // as weak object is always optional so to by pass this we use guard statement.
             guard let self = self else { return }
             switch (result){
             case .success(let followers):
-                self.followers = followers
+                if followers.count < 100 {hasMoreFollowers = false }
+                self.followers.append(contentsOf: followers)
                 self.updateData()
             case .failure(let error) :
                 self.presentGptAlertOnMainThread(title: "ERROR", message: error.rawValue, buttonTitle: "OK")
@@ -70,6 +73,7 @@ class FollowersViewController: UIViewController {
     
     func configureCollectionView(){
         collectionView = UICollectionView(frame: view.bounds, collectionViewLayout: Uihelper.create3columnFlowLayput(in : view))
+        collectionView.delegate = self
         view.addSubview(collectionView)
         collectionView.backgroundColor = .systemBackground
         collectionView?.register(FollowersCell.self, forCellWithReuseIdentifier: FollowersCell.reuserId)
@@ -77,3 +81,17 @@ class FollowersViewController: UIViewController {
 
 }
 
+extension FollowersViewController : UICollectionViewDelegate {
+
+    func scrollViewWillBeginDragging(_ scrollView: UIScrollView) {
+        let offsetY = scrollView.contentOffset.y
+        let contentHeight = scrollView.contentSize.height
+        let frameHeight = scrollView.frame.size.height
+        if offsetY > contentHeight - frameHeight && hasMoreFollowers {
+            page += 1
+            getFollowers(page: page)
+            print("Calling Api for next")
+        }
+
+    }
+}

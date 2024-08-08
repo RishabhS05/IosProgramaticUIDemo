@@ -30,6 +30,7 @@ class GptImageView: UIImageView {
        
     }
     func downloadImage(from urlString : String ){
+        
         let cachekey = NSString(string : urlString)
         
         if let image = self.cache.object(forKey: cachekey){
@@ -37,12 +38,15 @@ class GptImageView: UIImageView {
             return
         }
         guard let url = URL(string: urlString) else { return }
+        
         let task = URLSession.shared.dataTask(with: url){ data ,response ,error in
             if error != nil { return }
             guard let response = response as? HTTPURLResponse,response.statusCode == 200 else { return }
             guard let data  = data else { return }
             guard let image = UIImage(data: data)else { return }
+            
             self.cache.setObject(image, forKey: cachekey)
+            
             DispatchQueue.main.sync {
                 self.image = image
             }
