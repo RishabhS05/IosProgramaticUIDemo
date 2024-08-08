@@ -5,11 +5,13 @@
 //  Basic Native way to call an Api.
 //
 
-import Foundation
+import UIKit
 
 class NetworkManager {
     static let shared = NetworkManager()
-    let BASE_URL = "https://api.github.com/users/"
+    private let BASE_URL = "https://api.github.com/users/"
+    let imageCache = NSCache<NSString, UIImage>()
+    
     private init() {}
     
     func getFollowers(for username : String, page: Int, completed: @escaping (Result<[Follower], GPTError>)-> Void){
