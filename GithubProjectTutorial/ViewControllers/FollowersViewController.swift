@@ -56,10 +56,13 @@ class FollowersViewController: UIViewController {
     }
 
     func getFollowers(page : Int){ // api call
+        
+        showLoadingView()
         NetworkManager.shared.getFollowers(for: username, page: page){ [weak self]
           result in
             // as weak object is always optional so to by pass this we use guard statement.
             guard let self = self else { return }
+            self.dismissLoadingView()
             switch (result){
             case .success(let followers):
                 if followers.count < 100 {hasMoreFollowers = false }
