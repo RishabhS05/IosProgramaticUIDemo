@@ -12,6 +12,12 @@ import UIKit
 fileprivate var containerView : UIView!
 
 extension UIViewController {
+    
+    /// The is a method to display the alert message to the user on screen
+    /// - Parameters:
+    ///   - title: Title Header message of the alert dialog
+    ///   - message: Discription message of alert dialog
+    ///   - buttonTitle: Button label of alert dialog.
     func  presentGptAlertOnMainThread(title : String,message : String ,  buttonTitle: String){
         DispatchQueue.main.async{
             let alertVC = GptAlertViewController(alertTitle :title, message: message, buttonTitle: buttonTitle)
@@ -20,7 +26,7 @@ extension UIViewController {
             self.present(alertVC, animated: true)
         }
     }
-    
+    ///Show  Loading View from screen
     func showLoadingView(){
         containerView = UIView(frame: view.bounds)
         containerView.backgroundColor = .systemBackground
@@ -37,11 +43,22 @@ extension UIViewController {
         activityIndicator.startAnimating()
     }
     
+    ///Remove Loading View from screen
     func dismissLoadingView() {
         DispatchQueue.main.async {
             containerView.removeFromSuperview()
             containerView = nil
         }
 
+    }
+    
+    /// Method will called to handle if no data is available for any screen after calling any api.
+    /// - Parameters:
+    ///   - message: display message to handle empty data.
+    ///   - view: the view on which the emptystateUI will populate
+    func showEmptyStateView(with message : String, in view : UIView){
+        let emptyStateView = GptEmptyStateView(message: message)
+        emptyStateView.frame = view.bounds   
+        view.addSubview(emptyStateView)
     }
 }

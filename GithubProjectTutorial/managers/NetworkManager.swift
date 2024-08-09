@@ -14,6 +14,11 @@ class NetworkManager {
     
     private init() {}
     
+    /// Call get followers  of the current users api 
+    /// - Parameters:
+    ///   - username: takes the current user name as input
+    ///   - page: used for pagnation
+    ///   - completed: It is the callback method to provide the response of the api call.
     func getFollowers(for username : String, page: Int, completed: @escaping (Result<[Follower], GPTError>)-> Void){
         let endpoint = BASE_URL + "\(username)/followers?per_page=100&page=\(page)"
         

@@ -16,7 +16,7 @@ class GptBodyLabel: UILabel {
     
     init(textAlignment : NSTextAlignment){
         super.init(frame: .zero)
-            self.textAlignment = textAlignment
+        self.textAlignment = textAlignment
         configure()
     }
     

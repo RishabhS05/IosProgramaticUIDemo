@@ -11,8 +11,10 @@ class FollowersViewController: UIViewController {
     var  username: String!
     var collectionView : UICollectionView! //
     var followers : [Follower] = []
+    var filteredFollowers : [Follower] = []
     var page : Int  = 1
     var hasMoreFollowers = true
+    
     enum Section {// enums are by default hashable
         case main
      }
@@ -21,6 +23,7 @@ class FollowersViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         configureViewController()
+        configureSearchController()
         configureCollectionView()
         getFollowers(page: page)
         configureDataSource()
@@ -30,6 +33,8 @@ class FollowersViewController: UIViewController {
         navigationController?.setNavigationBarHidden(false, animated: true)
     }
     
+    
+    /// configuring Initial UIViewController
     func configureViewController(){
         view.backgroundColor = .systemBackground
         navigationController?.navigationBar.prefersLargeTitles = true
@@ -42,19 +47,40 @@ class FollowersViewController: UIViewController {
             return cell
         })
     }
-    func updateData(){
+    
+    /// Configuring search Controller and attaching into the navigationItem
+    func configureSearchController(){
+        let searchController  = UISearchController()
+        searchController.searchResultsUpdater = self
+        searchController.searchBar.delegate = self 
+        searchController.obscuresBackgroundDuringPresentation = false
+        navigationItem.searchController = searchController
+    }
+    
+    
+    /// wanted to show current followerslist count.
+    func setSearchControllerLabel(){
+        DispatchQueue.main.async {
+            self.navigationItem.searchController?.searchBar.placeholder = "Search username from \(self.followers.count) followers"
+        }
+    }
+    
+    func updateData(on followers : [Follower]){
         var snapshot = NSDiffableDataSourceSnapshot<Section, Follower>()
         snapshot.appendSections([.main])
         snapshot.appendItems(followers)
 //      runing in main thread
-//      DispatcherQueue.main.async{
-//            self.dataSource.apply( snapshot,animatingDifferences: true)
+//        DispatchQueue.main.async{
+//            self.dataSource.apply(snapshot,animatingDifferences: true)
 //        }
-        // below code : - According to Allen its will give us worning on running in background thread
+        // below code : - According to SAllen its will give us worning on running in background thread
         // work fine without any warning.
         self.dataSource.apply( snapshot,animatingDifferences: true)
+      
     }
-
+    
+    ///  get Follower Api call initated
+    /// - Parameter page: Page number is passed for pagination
     func getFollowers(page : Int){ // api call
         
         showLoadingView()
@@ -62,12 +88,17 @@ class FollowersViewController: UIViewController {
           result in
             // as weak object is always optional so to by pass this we use guard statement.
             guard let self = self else { return }
-            self.dismissLoadingView()
+             dismissLoadingView()
             switch (result){
             case .success(let followers):
                 if followers.count < 100 {hasMoreFollowers = false }
                 self.followers.append(contentsOf: followers)
-                self.updateData()
+                if  self.followers.isEmpty{ let message = "This user doesn't have any followers Go follow then 😀"
+                    DispatchQueue.main.async{ self.showEmptyStateView(with: message, in: self.view)
+                    }
+                }
+                self.updateData(on : self.followers)
+                setSearchControllerLabel()
             case .failure(let error) :
                 self.presentGptAlertOnMainThread(title: "ERROR", message: error.rawValue, buttonTitle: "OK")
             }
@@ -96,5 +127,16 @@ extension FollowersViewController : UICollectionViewDelegate {
             print("Calling Api for next")
         }
 
+    }
+}
+
+extension FollowersViewController : UISearchResultsUpdating, UISearchBarDelegate {
+    func updateSearchResults(for searchController: UISearchController) {
+        guard let filter = searchController.searchBar.text, !filter.isEmpty else { return }
+        filteredFollowers=followers.filter{$0.login.lowercased().contains(filter.lowercased())}
+        updateData(on: filteredFollowers)
+    }
+    func searchBarCancelButtonClicked(_ searchBar: UISearchBar) {
+        updateData(on: followers)
     }
 }

@@ -28,6 +28,7 @@
 		637866472C62F21900F0B56E /* GptImageView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 637866462C62F21900F0B56E /* GptImageView.swift */; };
 		6378664D2C63D78200F0B56E /* ARC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6378664C2C63D78200F0B56E /* ARC.swift */; };
 		6378664F2C651F3900F0B56E /* Uihelper.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6378664E2C651F3900F0B56E /* Uihelper.swift */; };
+		637866572C655C9A00F0B56E /* GptEmptyStateView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 637866562C655C9A00F0B56E /* GptEmptyStateView.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -54,6 +55,7 @@
 		637866462C62F21900F0B56E /* GptImageView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GptImageView.swift; sourceTree = "<group>"; };
 		6378664C2C63D78200F0B56E /* ARC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ARC.swift; sourceTree = "<group>"; };
 		6378664E2C651F3900F0B56E /* Uihelper.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Uihelper.swift; sourceTree = "<group>"; };
+		637866562C655C9A00F0B56E /* GptEmptyStateView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GptEmptyStateView.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -105,11 +107,12 @@
 		637866222C59E35200F0B56E /* widgets */ = {
 			isa = PBXGroup;
 			children = (
+				637866552C655B8000F0B56E /* views */,
+				637866542C655B5A00F0B56E /* imageView */,
+				637866532C655B4200F0B56E /* textField */,
 				637866422C62EFE800F0B56E /* labels */,
 				637866412C62EFC300F0B56E /* buttons */,
 				637866402C62EFB400F0B56E /* cells */,
-				637866252C59E90700F0B56E /* GptTextField.swift */,
-				637866462C62F21900F0B56E /* GptImageView.swift */,
 			);
 			path = widgets;
 			sourceTree = "<group>";
@@ -182,6 +185,30 @@
 				6378662C2C5D181F00F0B56E /* GptBodyLabel.swift */,
 			);
 			path = labels;
+			sourceTree = "<group>";
+		};
+		637866532C655B4200F0B56E /* textField */ = {
+			isa = PBXGroup;
+			children = (
+				637866252C59E90700F0B56E /* GptTextField.swift */,
+			);
+			path = textField;
+			sourceTree = "<group>";
+		};
+		637866542C655B5A00F0B56E /* imageView */ = {
+			isa = PBXGroup;
+			children = (
+				637866462C62F21900F0B56E /* GptImageView.swift */,
+			);
+			path = imageView;
+			sourceTree = "<group>";
+		};
+		637866552C655B8000F0B56E /* views */ = {
+			isa = PBXGroup;
+			children = (
+				637866562C655C9A00F0B56E /* GptEmptyStateView.swift */,
+			);
+			path = views;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -266,6 +293,7 @@
 				6378662B2C5D14DD00F0B56E /* GptTitleLabel.swift in Sources */,
 				6378662F2C5D19F600F0B56E /* GptAlertViewController.swift in Sources */,
 				6378663E2C62E15200F0B56E /* GPTError.swift in Sources */,
+				637866572C655C9A00F0B56E /* GptEmptyStateView.swift in Sources */,
 				637866362C62C70300F0B56E /* Follower.swift in Sources */,
 				637866212C59DAB900F0B56E /* FavoritesListViewController.swift in Sources */,
 				637866442C62F05700F0B56E /* FollowersCell.swift in Sources */,
