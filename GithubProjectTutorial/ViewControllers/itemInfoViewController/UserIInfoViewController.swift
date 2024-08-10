@@ -11,7 +11,7 @@ class UserIInfoViewController: UIViewController {
     var username : String!
     let headerView = UIView()
     let itemView1 = UIView()
-    let itenView2 = UIView()
+    let itemView2 = UIView()
     var itemsViews: [UIView ] = []
     
     override func viewDidLoad() {
@@ -40,6 +40,8 @@ class UserIInfoViewController: UIViewController {
                 case .success(let user):
                     DispatchQueue.main.async {
                         self.add(childVC: GptUserInfoHeaderViewController(user: user), to: self.headerView)
+                        self.add(childVC: GptReposItemViewController(user: user), to: self.itemView1)
+                        self.add(childVC: GptFollowersItemViewController(user: user), to: self.itemView2)
                     }
                 case.failure(let error):
                     self.presentGptAlertOnMainThread(title: "ERROR", message: error.rawValue, buttonTitle: "Dismiss")
@@ -57,7 +59,7 @@ class UserIInfoViewController: UIViewController {
     
     func layoutUI(){
         let padding : CGFloat = 20
-        itemsViews = [ headerView, itemView1, itenView2 ]
+        itemsViews = [ headerView, itemView1, itemView2 ]
         for item in itemsViews {
             item.translatesAutoresizingMaskIntoConstraints = false
             view.addSubview(item)
@@ -66,8 +68,6 @@ class UserIInfoViewController: UIViewController {
                     item.trailingAnchor.constraint(equalTo: view.trailingAnchor,constant: -padding)
                 ])
         }
-        itemView1.backgroundColor = .brown
-        itenView2.backgroundColor = .darkGray
         NSLayoutConstraint.activate([
             headerView.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor),
             headerView.heightAnchor.constraint(equalToConstant: 180),
@@ -75,8 +75,8 @@ class UserIInfoViewController: UIViewController {
             itemView1.topAnchor.constraint(equalTo: headerView.bottomAnchor,constant: padding),
             itemView1.heightAnchor.constraint(equalToConstant: 140),
             
-            itenView2.topAnchor.constraint(equalTo : itemView1.bottomAnchor, constant: padding),
-            itenView2.heightAnchor.constraint(equalToConstant: 140)
+            itemView2.topAnchor.constraint(equalTo : itemView1.bottomAnchor, constant: padding),
+            itemView2.heightAnchor.constraint(equalToConstant: 140)
         ])
     }
 }

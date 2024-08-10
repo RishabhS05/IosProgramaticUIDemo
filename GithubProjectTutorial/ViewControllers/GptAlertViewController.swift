@@ -9,7 +9,6 @@ import UIKit
 
 class GptAlertViewController: UIViewController {
 
-    
     let containerView  = UIView()
     let titleLabel = GptTitleLabel(textAlignment: .center, fontSize: 20)
     let messageLabel = GptBodyLabel(textAlignment: .center)
@@ -18,8 +17,7 @@ class GptAlertViewController: UIViewController {
     var message : String?
     var buttonTitle : String?
     let padding : CGFloat = 20
-    
-    init(alertTitle :String, message : String , buttonTitle : String ){
+    init(alertTitle :String, message : String , buttonTitle : String){
         super.init(nibName: nil, bundle: nil)
         self.alertTitle = alertTitle
         self.buttonTitle = buttonTitle

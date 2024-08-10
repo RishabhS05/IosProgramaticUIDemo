@@ -11,7 +11,7 @@ class GptItemInfoViewController: UIViewController {
 
     let stackView = UIStackView()
     let itemInfoViewOne = GptItemInfoView()
-    let itemiinfoViewtwo = GptItemInfoView()
+    let itemInfoViewTwo = GptItemInfoView()
     let actionButton = GptButton()
     var user : User!
     
@@ -40,13 +40,8 @@ class GptItemInfoViewController: UIViewController {
         stackView.axis = .horizontal
         stackView.distribution = .equalSpacing
         stackView.addArrangedSubview(itemInfoViewOne)
-        stackView.addArrangedSubview(itemiinfoViewtwo)
+        stackView.addArrangedSubview(itemInfoViewTwo)
     }
-    
-    
-    
-    
-    
     private func layoutUI(){
         view.addSubview(stackView)
         view.addSubview(actionButton)
@@ -57,9 +52,8 @@ class GptItemInfoViewController: UIViewController {
             stackView.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: padding),
             stackView.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -padding),
             stackView.heightAnchor.constraint(equalToConstant: 50),
-            
-            
-            actionButton.bottomAnchor.constraint(equalTo: view.bottomAnchor, constant: padding),
+
+            actionButton.bottomAnchor.constraint(equalTo: view.bottomAnchor, constant: -padding),
             actionButton.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: padding),
             actionButton.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -padding),
             actionButton.heightAnchor.constraint(equalToConstant: 44),

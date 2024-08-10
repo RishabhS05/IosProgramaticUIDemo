@@ -11,7 +11,6 @@ class GptButton: UIButton {
     
     override init(frame: CGRect) {
         super.init(frame: frame)
-        // custom code
         configure()
     }
     
@@ -20,6 +19,11 @@ class GptButton: UIButton {
         self.backgroundColor = backgroundColor
         self.setTitle( title, for: .normal)
         configure()
+    }
+    
+    func set(backgroundColor : UIColor, title : String){
+        self.backgroundColor = backgroundColor
+        self.setTitle(title, for: .normal)
     }
     
     

@@ -14,6 +14,7 @@ class FollowersViewController: UIViewController {
     var filteredFollowers : [Follower] = []
     var page : Int  = 1
     var hasMoreFollowers = true
+    var isSearching  = false
     
     enum Section {// enums are by default hashable
         case main
@@ -52,7 +53,7 @@ class FollowersViewController: UIViewController {
     func configureSearchController(){
         let searchController  = UISearchController()
         searchController.searchResultsUpdater = self
-        searchController.searchBar.delegate = self 
+        searchController.searchBar.delegate = self
         searchController.obscuresBackgroundDuringPresentation = false
         navigationItem.searchController = searchController
     }
@@ -126,17 +127,28 @@ extension FollowersViewController : UICollectionViewDelegate {
             getFollowers(page: page)
             print("Calling Api for next")
         }
-
+    }
+    func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
+        let activeList =  isSearching ? filteredFollowers : followers
+        let follower = activeList[indexPath.item]
+        let destVC = UserIInfoViewController()
+        destVC.username = follower.login
+        let navigationController = UINavigationController(rootViewController: destVC)
+        present(navigationController , animated: true)
+        
     }
 }
 
 extension FollowersViewController : UISearchResultsUpdating, UISearchBarDelegate {
     func updateSearchResults(for searchController: UISearchController) {
+        isSearching = true
         guard let filter = searchController.searchBar.text, !filter.isEmpty else { return }
         filteredFollowers=followers.filter{$0.login.lowercased().contains(filter.lowercased())}
         updateData(on: filteredFollowers)
     }
     func searchBarCancelButtonClicked(_ searchBar: UISearchBar) {
         updateData(on: followers)
+        isSearching = false
     }
 }
+

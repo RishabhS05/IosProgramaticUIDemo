@@ -15,8 +15,8 @@ class GptFollowersItemViewController : GptItemInfoViewController {
     }
      
     private func configureItems(){
-        itemiinfoViewtwo.setItemInfoType(itemInfoType: .repos, withCount: user.followers)
-        itemiinfoViewtwo.setItemInfoType(itemInfoType: .gist, withCount: user.following)
-        actionButton.set(backgroundColor: .systemPurple, title: "Git Followers")
+        itemInfoViewTwo.setItemInfoType(itemInfoType: .followers, withCount: user.followers)
+        itemInfoViewOne.setItemInfoType(itemInfoType: .following, withCount: user.following)
+        actionButton.set(backgroundColor: .systemGreen, title: "Git Followers")
     }
 }

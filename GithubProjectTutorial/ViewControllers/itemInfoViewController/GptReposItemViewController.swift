@@ -15,8 +15,8 @@ class GptReposItemViewController : GptItemInfoViewController {
     }
      
     private func configureItems(){
-        itemiinfoViewtwo.setItemInfoType(itemInfoType: .repos, withCount: user.publicRepos)
-        itemiinfoViewtwo.setItemInfoType(itemInfoType: .gist, withCount: user.publicGists)
+        itemInfoViewOne.setItemInfoType(itemInfoType: .repos, withCount: user.publicRepos)
+        itemInfoViewTwo.setItemInfoType(itemInfoType: .gist, withCount: user.publicGists)
         actionButton.set(backgroundColor: .systemPurple, title: "Github Profile")
     }
 }
