@@ -14,10 +14,11 @@ class GptItemInfoViewController: UIViewController {
     let itemInfoViewTwo = GptItemInfoView()
     let actionButton = GptButton()
     var user : User!
+   weak var delegate : UserInfoViewControllerDelegate!
     
     init(user : User){
         super.init(nibName: nil , bundle: nil)
-        self.user = user
+        self.user = user 
     }
     
     required init?(coder: NSCoder) {
@@ -29,12 +30,19 @@ class GptItemInfoViewController: UIViewController {
         configureBackgroundView()
         layoutUI()
         configureHorizontalStackView()
+        configureActionButton()
     }
 
    private func  configureBackgroundView(){
        view.layer.cornerRadius = 10
        view.backgroundColor = .secondarySystemBackground
    }
+    func configureActionButton(){
+        actionButton.addTarget(self , action:#selector(actionButtonTapped), for: .touchUpInside)
+    }
+    @objc func actionButtonTapped(){
+        // do for something in child classes
+    }
     
     private func configureHorizontalStackView(){
         stackView.axis = .horizontal

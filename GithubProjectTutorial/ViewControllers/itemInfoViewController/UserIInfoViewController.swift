@@ -7,6 +7,10 @@
 
 import UIKit
 
+protocol UserInfoViewControllerDelegate: class {
+    func didTapGithubProfile(for user : User)
+    func didTapGetFolowers(for user : User)
+}
 class UserIInfoViewController: UIViewController {
     var username : String!
     let headerView = UIView()
@@ -14,7 +18,8 @@ class UserIInfoViewController: UIViewController {
     let itemView2 = UIView()
     let dateLabel = GptBodyLabel(textAlignment: .center)
     var itemsViews: [UIView ] = []
-    
+
+    weak var  delegate : FollowersViewDelegate!
     override func viewDidLoad() {
         super.viewDidLoad()
         configureMainView()
@@ -39,17 +44,25 @@ class UserIInfoViewController: UIViewController {
             self.dismissLoadingView()
             switch result {
                 case .success(let user):
-                    DispatchQueue.main.async {
-                        self.add(childVC: GptUserInfoHeaderViewController(user: user), to: self.headerView)
-                        self.add(childVC: GptReposItemViewController(user: user), to: self.itemView1)
-                        self.add(childVC: GptFollowersItemViewController(user: user), to: self.itemView2)
-                        self.dateLabel.text = "Github since \(user.createdAt.convertToDisplayFormat())"
-                    }
+                    DispatchQueue.main.async { self.configureUiOnSuccess(user: user) }
                 case.failure(let error):
                     self.presentGptAlertOnMainThread(title: "ERROR", message: error.rawValue, buttonTitle: "Dismiss")
                     self.dismissVC()
             }
         }
+    }
+    
+    func configureUiOnSuccess(user : User) {
+        let repoVC = GptReposItemViewController(user: user)
+        repoVC.delegate = self
+        
+        let followersVC = GptFollowersItemViewController(user: user)
+        followersVC.delegate = self
+        
+        self.add(childVC: GptUserInfoHeaderViewController(user: user), to: self.headerView)
+        self.add(childVC:repoVC, to: self.itemView1)
+        self.add(childVC: followersVC, to: self.itemView2)
+        self.dateLabel.text = "Github since \(user.createdAt.convertToDisplayFormat())"
     }
     
     func add(childVC : UIViewController, to containerView : UIView){
@@ -58,7 +71,7 @@ class UserIInfoViewController: UIViewController {
         childVC.view.frame = containerView.bounds
         childVC.didMove(toParent: self)
     }
-    
+
     func layoutUI(){
         let padding : CGFloat = 20
         itemsViews = [ headerView, itemView1, itemView2, dateLabel ]
@@ -86,3 +99,20 @@ class UserIInfoViewController: UIViewController {
     }
     
 }
+
+extension UserIInfoViewController : UserInfoViewControllerDelegate {
+    func didTapGithubProfile(for user: User) {
+        presentSafariViewController(with: user.htmlUrl)
+    }
+    
+    func didTapGetFolowers(for user: User) {
+        guard user.followers != 0 else {
+            presentGptAlertOnMainThread(title: "No Followers", message: "\(user.login) has no followers.", buttonTitle: "So Sad")
+            return
+        }
+        delegate.didRequestFollowers(for: user.login)
+        dismissVC()
+    }
+}
+   
+ 

@@ -6,6 +6,9 @@
 //   
 
 import UIKit
+protocol FollowersViewDelegate  : class {
+    func  didRequestFollowers(for username : String)
+}
 
 class FollowersViewController: UIViewController {
     var  username: String!
@@ -113,7 +116,12 @@ class FollowersViewController: UIViewController {
         collectionView.backgroundColor = .systemBackground
         collectionView?.register(FollowersCell.self, forCellWithReuseIdentifier: FollowersCell.reuserId)
     }
-
+    private func resetScreen(){
+        followers.removeAll()
+        filteredFollowers.removeAll()
+        collectionView.setContentOffset(.zero, animated: true)
+        page = 1
+    }
 }
 
 extension FollowersViewController : UICollectionViewDelegate {
@@ -132,6 +140,7 @@ extension FollowersViewController : UICollectionViewDelegate {
         let activeList =  isSearching ? filteredFollowers : followers
         let follower = activeList[indexPath.item]
         let destVC = UserIInfoViewController()
+        destVC.delegate = self
         destVC.username = follower.login
         let navigationController = UINavigationController(rootViewController: destVC)
         present(navigationController , animated: true)
@@ -139,7 +148,8 @@ extension FollowersViewController : UICollectionViewDelegate {
     }
 }
 
-extension FollowersViewController : UISearchResultsUpdating, UISearchBarDelegate {
+extension FollowersViewController : UISearchResultsUpdating, UISearchBarDelegate  {
+    
     func updateSearchResults(for searchController: UISearchController) {
         isSearching = true
         guard let filter = searchController.searchBar.text, !filter.isEmpty else { return }
@@ -150,5 +160,14 @@ extension FollowersViewController : UISearchResultsUpdating, UISearchBarDelegate
         updateData(on: followers)
         isSearching = false
     }
+    
 }
 
+extension FollowersViewController : FollowersViewDelegate{
+    func didRequestFollowers(for username: String) {
+        self.username = username
+        title = username
+        resetScreen()
+        getFollowers(page: 1)
+    }
+}

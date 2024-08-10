@@ -6,6 +6,7 @@
 //
 
 import UIKit
+import SafariServices
 
 
 // the scope is limited to the file only.
@@ -60,5 +61,15 @@ extension UIViewController {
         let emptyStateView = GptEmptyStateView(message: message)
         emptyStateView.frame = view.bounds   
         view.addSubview(emptyStateView)
+    }
+    
+    func presentSafariViewController(with url : String){
+        guard let url = URL(string: url) else {
+            presentGptAlertOnMainThread(title: "Invalid Url", message: "The Url attached is invalid", buttonTitle: "Ok")
+            return
+        }
+        let safariVC = SFSafariViewController(url: url)
+        safariVC.preferredControlTintColor = .systemGreen
+        present(safariVC, animated : true)
     }
 }

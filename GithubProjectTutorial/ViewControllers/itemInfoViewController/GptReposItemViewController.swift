@@ -19,4 +19,7 @@ class GptReposItemViewController : GptItemInfoViewController {
         itemInfoViewTwo.setItemInfoType(itemInfoType: .gist, withCount: user.publicGists)
         actionButton.set(backgroundColor: .systemPurple, title: "Github Profile")
     }
+    override func actionButtonTapped() {
+        delegate.didTapGithubProfile(for: user)
+    }
 }
