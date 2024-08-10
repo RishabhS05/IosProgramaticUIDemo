@@ -12,6 +12,7 @@ class UserIInfoViewController: UIViewController {
     let headerView = UIView()
     let itemView1 = UIView()
     let itemView2 = UIView()
+    let dateLabel = GptBodyLabel(textAlignment: .center)
     var itemsViews: [UIView ] = []
     
     override func viewDidLoad() {
@@ -42,6 +43,7 @@ class UserIInfoViewController: UIViewController {
                         self.add(childVC: GptUserInfoHeaderViewController(user: user), to: self.headerView)
                         self.add(childVC: GptReposItemViewController(user: user), to: self.itemView1)
                         self.add(childVC: GptFollowersItemViewController(user: user), to: self.itemView2)
+                        self.dateLabel.text = "Github since \(user.createdAt.convertToDisplayFormat())"
                     }
                 case.failure(let error):
                     self.presentGptAlertOnMainThread(title: "ERROR", message: error.rawValue, buttonTitle: "Dismiss")
@@ -59,7 +61,7 @@ class UserIInfoViewController: UIViewController {
     
     func layoutUI(){
         let padding : CGFloat = 20
-        itemsViews = [ headerView, itemView1, itemView2 ]
+        itemsViews = [ headerView, itemView1, itemView2, dateLabel ]
         for item in itemsViews {
             item.translatesAutoresizingMaskIntoConstraints = false
             view.addSubview(item)
@@ -76,7 +78,11 @@ class UserIInfoViewController: UIViewController {
             itemView1.heightAnchor.constraint(equalToConstant: 140),
             
             itemView2.topAnchor.constraint(equalTo : itemView1.bottomAnchor, constant: padding),
-            itemView2.heightAnchor.constraint(equalToConstant: 140)
+            itemView2.heightAnchor.constraint(equalToConstant: 140),
+            
+            dateLabel.topAnchor.constraint(equalTo: itemView2.bottomAnchor, constant: padding),
+            dateLabel.heightAnchor.constraint(equalToConstant: 18)
         ])
     }
+    
 }
