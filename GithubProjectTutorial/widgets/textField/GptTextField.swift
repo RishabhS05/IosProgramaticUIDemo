@@ -25,6 +25,7 @@ class GptTextField: UITextField {
         backgroundColor = .tertiarySystemBackground
         autocorrectionType = .no
         returnKeyType = .done
+        clearButtonMode = .whileEditing 
         placeholder = "Enter a username"
     }
     required init?(coder: NSCoder) {

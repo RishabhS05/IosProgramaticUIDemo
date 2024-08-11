@@ -13,6 +13,7 @@ class SearchViewController: UIViewController {
     let usernameTextfield =  GptTextField()
     let callToActionButton = GptButton(backgroundColor : .systemGreen, title : "Get Followers")
     var isUsernameEntered : Bool { return !usernameTextfield.text!.isEmpty }
+    var logoImageViewTopConstraint : NSLayoutConstraint!
     override func viewDidLoad() {
         super.viewDidLoad()
         view.backgroundColor = .systemBackground
@@ -28,6 +29,7 @@ class SearchViewController: UIViewController {
     }
     override func viewWillAppear(_ animated: Bool) {
          super.viewWillAppear(animated)
+        usernameTextfield.text =  ""
         navigationController?.setNavigationBarHidden(false, animated:true)
 
     }
@@ -39,9 +41,12 @@ class SearchViewController: UIViewController {
     func configureLogoImageView(){
         view.addSubview(logoImageView)
         logoImageView.translatesAutoresizingMaskIntoConstraints = false
-        logoImageView.image = UIImage(named: "gh-logo")
+        logoImageView.image = UIImage(named: Images.ghLogo )
+        //
+        let topConstraintConstant : CGFloat  = DeviceType.isiphoneSE || DeviceType.isiphone8Zoomed ? 20 : 80
+        logoImageViewTopConstraint = logoImageView.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor, constant: topConstraintConstant)
+        logoImageViewTopConstraint.isActive = true
         NSLayoutConstraint.activate([
-            logoImageView.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor, constant: 80),
             logoImageView.centerXAnchor.constraint(equalTo: view.centerXAnchor),
             logoImageView.heightAnchor.constraint(equalToConstant: 200),
             logoImageView.widthAnchor.constraint(equalToConstant: 200)
@@ -76,9 +81,9 @@ class SearchViewController: UIViewController {
       presentGptAlertOnMainThread(title: "Enter Username", message: "Please Enter a username.", buttonTitle: "Ok")
             return
         }
-       let followerListVC = FollowersViewController()
-        followerListVC.username = usernameTextfield.text
-        followerListVC.title = usernameTextfield.text
+        usernameTextfield.resignFirstResponder()
+       let followerListVC = FollowersViewController(username: usernameTextfield.text!)
+     
         navigationController?.pushViewController(followerListVC, animated: true)
     }
 }
