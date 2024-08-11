@@ -38,11 +38,43 @@ class FollowersViewController: UIViewController {
     }
     
     
+    
     /// configuring Initial UIViewController
     func configureViewController(){
         view.backgroundColor = .systemBackground
         navigationController?.navigationBar.prefersLargeTitles = true
+        let addButton = UIBarButtonItem(barButtonSystemItem: .add, target: self, action: #selector(addToFav))
+        navigationItem.rightBarButtonItem = addButton
     }
+    
+                                        
+ @objc func addToFav(){
+     showLoadingView()
+     NetworkManager.shared.getUser(username: username){  [weak self]result in
+         guard let self  = self else { return }
+         self.dismissLoadingView()
+         switch result {
+             case .success(let user):
+                 let favorite = Follower(login: user.login , avatarUrl: user.avatarUrl)
+                 
+                 PersistanceManager.updatewith(favorite: favorite, actionType: .add ){ [weak self] err in
+                   
+                     guard let self = self else { return }
+                     
+                     guard let err = err else {
+                         self.presentGptAlertOnMainThread(title: "Success", message: "You have successfully added \(user.login) to your favorite list.", buttonTitle: "Ok")
+                         return
+                     }
+                     self.presentGptAlertOnMainThread(title: "Hi 😄", message: err.rawValue, buttonTitle: "Ok")
+                 }
+    
+             case .failure(let err):
+                 self.presentGptAlertOnMainThread(title:"Something went wrong!!", message: err.rawValue, buttonTitle: "Ok")
+                 
+         }
+     }
+        }
+    
     func configureDataSource(){
         dataSource = UICollectionViewDiffableDataSource<Section, Follower>(collectionView: collectionView, cellProvider: {
            (collectionView , indexpath , follower) -> UICollectionViewCell? in

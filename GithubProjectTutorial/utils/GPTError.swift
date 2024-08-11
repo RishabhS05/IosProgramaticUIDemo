@@ -13,5 +13,6 @@ enum GPTError : String , Error // raw values
     case checkInternet    = "Unable to call api please chack the internet connection."
     case invalidResponse  = "Invalid response from the server. Please try again."
     case serverDataInvalid = "This data from the server is invalid. Please try again."
-    
+    case invalidFavorite = "Unable to add as favorite. Please try again after sometimes."
+    case alreadyFav = "This user is already is in you favorite list."
 }

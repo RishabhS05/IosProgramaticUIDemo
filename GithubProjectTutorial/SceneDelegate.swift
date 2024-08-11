@@ -16,30 +16,11 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
         guard let windowScene = (scene as? UIWindowScene) else { return }
         window = UIWindow(frame: windowScene.coordinateSpace.bounds)
         window?.windowScene = windowScene
-        window?.rootViewController = createTabBar()
+        window?.rootViewController = GPTTabBarViewController()
         // this method allow us to set a specific window as the key window which will become the window that receives the user input.
         window?.makeKeyAndVisible()
         configureNavigationBar()
 
-    }
-    func createTabBar() -> UITabBarController {
-        let tabBar = UITabBarController()
-        tabBar.tabBar.backgroundColor = .systemBackground
-        UITabBar.appearance().tintColor = .systemGreen
-         tabBar.viewControllers = [createSearchNavigationController(),createFavoritesNavigationController()]
-        return tabBar
-    }
-    func createSearchNavigationController() -> UINavigationController {
-        let searchVC = SearchViewController()
-        searchVC.title = "Search"
-        searchVC.tabBarItem = UITabBarItem(tabBarSystemItem: .search,tag: 0)
-        return UINavigationController(rootViewController: searchVC)
-    }
-    func createFavoritesNavigationController() -> UINavigationController {
-        let favVC = FavoritesListViewController()
-        favVC.title = "Favorites"
-        favVC.tabBarItem = UITabBarItem(tabBarSystemItem: .favorites,tag: 1)
-        return UINavigationController(rootViewController: favVC)
     }
     
     func configureNavigationBar(){
