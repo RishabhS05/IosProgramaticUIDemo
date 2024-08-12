@@ -1,9 +1,9 @@
-//
-//  NetworkManager.swift
-//  GithubProjectTutorial
-//
-//  Basic Native way to call an Api.
-//
+    //
+    //  NetworkManager.swift
+    //  GithubProjectTutorial
+    //
+    //  Basic Native way to call an Api.
+    //
 
 import UIKit
 
@@ -14,11 +14,11 @@ class NetworkManager {
     
     private init() {}
     
-    /// Call get followers  of the current users api 
-    /// - Parameters:
-    ///   - username: takes the current user name as input
-    ///   - page: used for pagnation
-    ///   - completed: It is the callback method to provide the response of the api call.
+        /// Call get followers  of the current users api
+        /// - Parameters:
+        ///   - username: takes the current user name as input
+        ///   - page: used for pagnation
+        ///   - completed: It is the callback method to provide the response of the api call.
     
     func getFollowers(for username : String, page: Int, completed: @escaping (Result<[Follower], GPTError>)-> Void){
         let endpoint = BASE_URL + "\(username)/followers?per_page=100&page=\(page)"
@@ -42,6 +42,7 @@ class NetworkManager {
             do {
                 let decoder = JSONDecoder()
                 decoder.keyDecodingStrategy = .convertFromSnakeCase
+                decoder.dateDecodingStrategy = .iso8601
                 let followers = try decoder.decode([Follower].self, from:data)
                 completed(.success(followers))
             }
@@ -80,6 +81,7 @@ class NetworkManager {
             do {
                 let decoder = JSONDecoder()
                 decoder.keyDecodingStrategy = .convertFromSnakeCase
+                decoder.dateDecodingStrategy = .iso8601
                 let user = try decoder.decode(User.self, from: data)
                 completed(.success(user))
             }
@@ -88,6 +90,33 @@ class NetworkManager {
                 completed(.failure(.serverDataInvalid))
             }
             
+        }
+        task.resume()
+    }
+    
+    func downloadImage(from url : String , completed : @escaping(UIImage?) -> Void){
+        
+        let cachekey = NSString(string : url)
+        
+        if let image = imageCache.object(forKey: cachekey){
+          completed(image)
+            return
+        }
+        guard let url = URL(string: url) else { return }
+        
+        let task = URLSession.shared.dataTask(with: url){ [weak self] data ,response ,error in
+             guard let self = self ,error == nil,
+            let response = response as? HTTPURLResponse,response.statusCode == 200,
+            let data  = data,
+            let image = UIImage(data: data) else {
+                 completed(nil)
+                 return
+             }
+
+            imageCache.setObject(image, forKey: cachekey)
+            
+            completed(image)
+                
         }
         task.resume()
     }

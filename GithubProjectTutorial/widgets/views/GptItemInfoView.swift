@@ -27,10 +27,7 @@ class GptItemInfoView: UIView {
     }
     
     func configure(){
-        addSubview(symbolImageView)
-        addSubview(titleLabel)
-        addSubview(countLabel)
-        
+        addSubviews(symbolImageView,titleLabel,countLabel)
         symbolImageView.translatesAutoresizingMaskIntoConstraints = false
         symbolImageView.tintColor = .label
         symbolImageView.contentMode = .scaleAspectFill
@@ -58,16 +55,16 @@ class GptItemInfoView: UIView {
      
         switch itemInfoType{
             case .following : 
-                symbolImageView.image = UIImage(systemName:SfSymbols.followings )
+                symbolImageView.image = SfSymbols.followings
                 titleLabel.text = "Following"
             case .gist:
-                symbolImageView.image = UIImage(systemName:SfSymbols.gist )
+                symbolImageView.image = SfSymbols.gist
                 titleLabel.text = "Pubilc Gists"
             case .repos:
-                symbolImageView.image = UIImage(systemName:SfSymbols.repos )
+                symbolImageView.image = SfSymbols.repos
                 titleLabel.text = "Pubilc Repos"
             case .followers:
-                symbolImageView.image = UIImage(systemName:SfSymbols.followers )
+                symbolImageView.image = SfSymbols.followers
                 titleLabel.text = "Followers"
         }
         countLabel.text = String(count)

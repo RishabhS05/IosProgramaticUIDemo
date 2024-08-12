@@ -5,12 +5,12 @@
 //  Created by Rishabh Shrivastava on 02/08/24.
 //   
 
-import UIKit
 protocol FollowersViewDelegate  : class {
     func  didRequestFollowers(for username : String)
 }
 
-class FollowersViewController: UIViewController {
+import UIKit
+class FollowersViewController: BaseNetworkViewController {
     var  username: String!
     var collectionView : UICollectionView! //
     var followers : [Follower] = []
@@ -18,6 +18,7 @@ class FollowersViewController: UIViewController {
     var page : Int  = 1
     var hasMoreFollowers = true
     var isSearching  = false
+    var isLoadingMoreFollowers  = false
     
     enum Section {// enums are by default hashable
         case main
@@ -97,7 +98,6 @@ class FollowersViewController: UIViewController {
     func configureSearchController(){
         let searchController  = UISearchController()
         searchController.searchResultsUpdater = self
-        searchController.searchBar.delegate = self
         searchController.obscuresBackgroundDuringPresentation = false
         navigationItem.searchController = searchController
     }
@@ -129,6 +129,7 @@ class FollowersViewController: UIViewController {
     func getFollowers(page : Int){ // api call
         
         showLoadingView()
+        isLoadingMoreFollowers = true
         NetworkManager.shared.getFollowers(for: username, page: page){ [weak self]
           result in
             // as weak object is always optional so to by pass this we use guard statement.
@@ -148,6 +149,7 @@ class FollowersViewController: UIViewController {
                 self.presentGptAlertOnMainThread(title: "ERROR", message: error.rawValue, buttonTitle: "OK")
             }
         }
+        isLoadingMoreFollowers = false
     }
     
     func configureCollectionView(){
@@ -161,6 +163,7 @@ class FollowersViewController: UIViewController {
         followers.removeAll()
         filteredFollowers.removeAll()
         collectionView.setContentOffset(.zero, animated: true)
+        collectionView.scrollToItem(at: IndexPath(item: 0, section: 0), at: .top, animated: true)
         page = 1
     }
 }
@@ -171,7 +174,7 @@ extension FollowersViewController : UICollectionViewDelegate {
         let offsetY = scrollView.contentOffset.y
         let contentHeight = scrollView.contentSize.height
         let frameHeight = scrollView.frame.size.height
-        if offsetY > contentHeight - frameHeight && hasMoreFollowers {
+        if offsetY > contentHeight - frameHeight && hasMoreFollowers && !isLoadingMoreFollowers  {
             page += 1
             getFollowers(page: page)
             print("Calling Api for next")
@@ -180,7 +183,7 @@ extension FollowersViewController : UICollectionViewDelegate {
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
         let activeList =  isSearching ? filteredFollowers : followers
         let follower = activeList[indexPath.item]
-        let destVC = UserIInfoViewController()
+        let destVC = UserInfoViewController()
         destVC.delegate = self
         destVC.username = follower.login
         let navigationController = UINavigationController(rootViewController: destVC)
@@ -189,19 +192,19 @@ extension FollowersViewController : UICollectionViewDelegate {
     }
 }
 
-extension FollowersViewController : UISearchResultsUpdating, UISearchBarDelegate  {
+extension FollowersViewController : UISearchResultsUpdating  {
     
     func updateSearchResults(for searchController: UISearchController) {
         isSearching = true
-        guard let filter = searchController.searchBar.text, !filter.isEmpty else { return }
+        guard let filter = searchController.searchBar.text, !filter.isEmpty else { 
+            filteredFollowers.removeAll()
+            updateData(on: followers)
+            isSearching = false
+            return
+        }
         filteredFollowers=followers.filter{$0.login.lowercased().contains(filter.lowercased())}
         updateData(on: filteredFollowers)
     }
-    func searchBarCancelButtonClicked(_ searchBar: UISearchBar) {
-        updateData(on: followers)
-        isSearching = false
-    }
-    
 }
 
 extension FollowersViewController : FollowersViewDelegate{

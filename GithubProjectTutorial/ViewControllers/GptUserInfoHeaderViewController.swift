@@ -25,30 +25,21 @@ class GptUserInfoHeaderViewController: UIViewController {
     }
     override func viewDidLoad() {
         super.viewDidLoad()
-        addSubViews()
+        view.addSubviews(userAvatarImageView,usernameLebel, nameLabel,locationImage,bioLabel,locationLabel)
         configureView()
         configureUIElements()
     }
     func configureUIElements(){
-        userAvatarImageView.downloadImage(from: user.avatarUrl)
+        userAvatarImageView.downLoadImage(from : user.avatarUrl)
         usernameLebel.text = user.login
         nameLabel.text = user.name ?? ""
         locationLabel.text = user.name ?? "No Location"
         bioLabel.text = user.bio ?? "No Bio Label"
         bioLabel.numberOfLines = 3
-        locationImage.image = UIImage( systemName:SfSymbols.location)
+        locationImage.image = SfSymbols.location 
         locationImage.tintColor = .secondaryLabel
     }
     
-    func addSubViews(){
-        view.addSubview(userAvatarImageView)
-        view.addSubview(usernameLebel)
-        view.addSubview(nameLabel)
-        view.addSubview(locationImage)
-        view.addSubview(bioLabel)
-        view.addSubview(locationLabel)
-    }
- 
     func configureView(){
         let padding : CGFloat = 20
         let textImagePadding : CGFloat = 12

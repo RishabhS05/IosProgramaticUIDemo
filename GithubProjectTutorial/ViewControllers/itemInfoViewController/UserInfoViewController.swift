@@ -7,18 +7,18 @@
 
 import UIKit
 
-protocol UserInfoViewControllerDelegate: class {
+protocol UserInfoViewControllerDelegate: AnyObject {
     func didTapGithubProfile(for user : User)
     func didTapGetFolowers(for user : User)
 }
-class UserIInfoViewController: UIViewController {
+class UserInfoViewController: BaseNetworkViewController {
     var username : String!
     let headerView = UIView()
     let itemView1 = UIView()
     let itemView2 = UIView()
     let dateLabel = GptBodyLabel(textAlignment: .center)
     var itemsViews: [UIView ] = []
-
+    
     weak var  delegate : FollowersViewDelegate!
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -62,7 +62,7 @@ class UserIInfoViewController: UIViewController {
         self.add(childVC: GptUserInfoHeaderViewController(user: user), to: self.headerView)
         self.add(childVC:repoVC, to: self.itemView1)
         self.add(childVC: followersVC, to: self.itemView2)
-        self.dateLabel.text = "Github since \(user.createdAt.convertToDisplayFormat())"
+        self.dateLabel.text = "Github since \(user.createdAt.convertToMonthYear())"
     }
     
     func add(childVC : UIViewController, to containerView : UIView){
@@ -100,19 +100,22 @@ class UserIInfoViewController: UIViewController {
     
 }
 
-extension UserIInfoViewController : UserInfoViewControllerDelegate {
+extension UserInfoViewController : UserInfoViewControllerDelegate {
     func didTapGithubProfile(for user: User) {
+        guard let url = URL(string: user.htmlUrl) else {
+            presentGptAlertOnMainThread(title: "Invalid Url", message: "The Url attached is invalid", buttonTitle: "Ok")
+            return
+        }
         presentSafariViewController(with: user.htmlUrl)
     }
     
     func didTapGetFolowers(for user: User) {
         guard user.followers != 0 else {
-            presentGptAlertOnMainThread(title: "No Followers", message: "\(user.login) has no followers.", buttonTitle: "So Sad")
-            return
-        }
-        delegate.didRequestFollowers(for: user.login)
-        dismissVC()
+                  presentGptAlertOnMainThread(title: "No Followers", message: "\(user.login) has no followers.", buttonTitle: "So Sad")
+                  return
+              }
+              delegate.didRequestFollowers(for: user.login)
+              dismissVC()
     }
 }
    
- 

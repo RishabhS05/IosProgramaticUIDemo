@@ -11,7 +11,6 @@
 		631C616C2C670DE70087624E /* GptUserInfoHeaderViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 631C616B2C670DE70087624E /* GptUserInfoHeaderViewController.swift */; };
 		631C616E2C6718550087624E /* Constants.swift in Sources */ = {isa = PBXBuildFile; fileRef = 631C616D2C6718550087624E /* Constants.swift */; };
 		631C61702C6726950087624E /* GptItemInfoView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 631C616F2C6726950087624E /* GptItemInfoView.swift */; };
-		631C61722C67AFD70087624E /* GptItemInfoViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 631C61712C67AFD70087624E /* GptItemInfoViewController.swift */; };
 		631C61762C67BD840087624E /* GptReposItemViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 631C61752C67BD840087624E /* GptReposItemViewController.swift */; };
 		631C61782C67C0770087624E /* GptFollowersItemViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 631C61772C67C0770087624E /* GptFollowersItemViewController.swift */; };
 		631C617B2C67CED80087624E /* Date+ext.swift in Sources */ = {isa = PBXBuildFile; fileRef = 631C617A2C67CED80087624E /* Date+ext.swift */; };
@@ -38,10 +37,14 @@
 		6378664D2C63D78200F0B56E /* ARC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6378664C2C63D78200F0B56E /* ARC.swift */; };
 		6378664F2C651F3900F0B56E /* Uihelper.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6378664E2C651F3900F0B56E /* Uihelper.swift */; };
 		637866572C655C9A00F0B56E /* GptEmptyStateView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 637866562C655C9A00F0B56E /* GptEmptyStateView.swift */; };
-		6378665B2C65CF9500F0B56E /* UserIInfoViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6378665A2C65CF9500F0B56E /* UserIInfoViewController.swift */; };
+		6378665B2C65CF9500F0B56E /* UserInfoViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6378665A2C65CF9500F0B56E /* UserInfoViewController.swift */; };
 		63B3AB262C6806C700569A6A /* PersistanceManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 63B3AB252C6806C700569A6A /* PersistanceManager.swift */; };
 		63B3AB282C681DA100569A6A /* UIFavoriteViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 63B3AB272C681DA100569A6A /* UIFavoriteViewCell.swift */; };
 		63B3AB2B2C6884FE00569A6A /* GPTTabBarViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 63B3AB2A2C6884FE00569A6A /* GPTTabBarViewController.swift */; };
+		63B3AB2D2C6A058500569A6A /* GPTViewBackground.swift in Sources */ = {isa = PBXBuildFile; fileRef = 63B3AB2C2C6A058500569A6A /* GPTViewBackground.swift */; };
+		63B3AB2F2C6A370400569A6A /* BaseNetworkViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 63B3AB2E2C6A370400569A6A /* BaseNetworkViewController.swift */; };
+		63B3AB312C6A463800569A6A /* UIView+ext.swift in Sources */ = {isa = PBXBuildFile; fileRef = 63B3AB302C6A463800569A6A /* UIView+ext.swift */; };
+		63B3AB352C6A5E7100569A6A /* GptItemInfoViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 63B3AB342C6A5E7100569A6A /* GptItemInfoViewController.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -49,7 +52,6 @@
 		631C616B2C670DE70087624E /* GptUserInfoHeaderViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GptUserInfoHeaderViewController.swift; sourceTree = "<group>"; };
 		631C616D2C6718550087624E /* Constants.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Constants.swift; sourceTree = "<group>"; };
 		631C616F2C6726950087624E /* GptItemInfoView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GptItemInfoView.swift; sourceTree = "<group>"; };
-		631C61712C67AFD70087624E /* GptItemInfoViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GptItemInfoViewController.swift; sourceTree = "<group>"; };
 		631C61752C67BD840087624E /* GptReposItemViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GptReposItemViewController.swift; sourceTree = "<group>"; };
 		631C61772C67C0770087624E /* GptFollowersItemViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GptFollowersItemViewController.swift; sourceTree = "<group>"; };
 		631C617A2C67CED80087624E /* Date+ext.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Date+ext.swift"; sourceTree = "<group>"; };
@@ -78,10 +80,14 @@
 		6378664C2C63D78200F0B56E /* ARC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ARC.swift; sourceTree = "<group>"; };
 		6378664E2C651F3900F0B56E /* Uihelper.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Uihelper.swift; sourceTree = "<group>"; };
 		637866562C655C9A00F0B56E /* GptEmptyStateView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GptEmptyStateView.swift; sourceTree = "<group>"; };
-		6378665A2C65CF9500F0B56E /* UserIInfoViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserIInfoViewController.swift; sourceTree = "<group>"; };
+		6378665A2C65CF9500F0B56E /* UserInfoViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserInfoViewController.swift; sourceTree = "<group>"; };
 		63B3AB252C6806C700569A6A /* PersistanceManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PersistanceManager.swift; sourceTree = "<group>"; };
 		63B3AB272C681DA100569A6A /* UIFavoriteViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UIFavoriteViewCell.swift; sourceTree = "<group>"; };
 		63B3AB2A2C6884FE00569A6A /* GPTTabBarViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GPTTabBarViewController.swift; sourceTree = "<group>"; };
+		63B3AB2C2C6A058500569A6A /* GPTViewBackground.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GPTViewBackground.swift; sourceTree = "<group>"; };
+		63B3AB2E2C6A370400569A6A /* BaseNetworkViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BaseNetworkViewController.swift; sourceTree = "<group>"; };
+		63B3AB302C6A463800569A6A /* UIView+ext.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIView+ext.swift"; sourceTree = "<group>"; };
+		63B3AB342C6A5E7100569A6A /* GptItemInfoViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GptItemInfoViewController.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -98,10 +104,10 @@
 		631C61792C67C0F40087624E /* itemInfoViewController */ = {
 			isa = PBXGroup;
 			children = (
-				6378665A2C65CF9500F0B56E /* UserIInfoViewController.swift */,
-				631C61712C67AFD70087624E /* GptItemInfoViewController.swift */,
+				6378665A2C65CF9500F0B56E /* UserInfoViewController.swift */,
 				631C61772C67C0770087624E /* GptFollowersItemViewController.swift */,
 				631C61752C67BD840087624E /* GptReposItemViewController.swift */,
+				63B3AB342C6A5E7100569A6A /* GptItemInfoViewController.swift */,
 			);
 			path = itemInfoViewController;
 			sourceTree = "<group>";
@@ -164,6 +170,7 @@
 				637866282C5C44D200F0B56E /* FollowersViewController.swift */,
 				6378662E2C5D19F600F0B56E /* GptAlertViewController.swift */,
 				631C616B2C670DE70087624E /* GptUserInfoHeaderViewController.swift */,
+				63B3AB2E2C6A370400569A6A /* BaseNetworkViewController.swift */,
 			);
 			path = ViewControllers;
 			sourceTree = "<group>";
@@ -174,6 +181,7 @@
 				637866302C5F37E900F0B56E /* ViewController+ext.swift */,
 				631C617A2C67CED80087624E /* Date+ext.swift */,
 				631C617C2C67CF160087624E /* String+ext.swift */,
+				63B3AB302C6A463800569A6A /* UIView+ext.swift */,
 			);
 			path = extensions;
 			sourceTree = "<group>";
@@ -254,6 +262,7 @@
 			children = (
 				637866562C655C9A00F0B56E /* GptEmptyStateView.swift */,
 				631C616F2C6726950087624E /* GptItemInfoView.swift */,
+				63B3AB2C2C6A058500569A6A /* GPTViewBackground.swift */,
 			);
 			path = views;
 			sourceTree = "<group>";
@@ -337,7 +346,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				6378664F2C651F3900F0B56E /* Uihelper.swift in Sources */,
-				6378665B2C65CF9500F0B56E /* UserIInfoViewController.swift in Sources */,
+				6378665B2C65CF9500F0B56E /* UserInfoViewController.swift in Sources */,
 				6378664D2C63D78200F0B56E /* ARC.swift in Sources */,
 				637866382C62C84D00F0B56E /* User.swift in Sources */,
 				6378661F2C59D9F900F0B56E /* SearchViewController.swift in Sources */,
@@ -352,6 +361,7 @@
 				637866312C5F37E900F0B56E /* ViewController+ext.swift in Sources */,
 				631C616C2C670DE70087624E /* GptUserInfoHeaderViewController.swift in Sources */,
 				6378662B2C5D14DD00F0B56E /* GptTitleLabel.swift in Sources */,
+				63B3AB2D2C6A058500569A6A /* GPTViewBackground.swift in Sources */,
 				6378662F2C5D19F600F0B56E /* GptAlertViewController.swift in Sources */,
 				6378663E2C62E15200F0B56E /* GPTError.swift in Sources */,
 				637866572C655C9A00F0B56E /* GptEmptyStateView.swift in Sources */,
@@ -359,16 +369,18 @@
 				631C61782C67C0770087624E /* GptFollowersItemViewController.swift in Sources */,
 				637866362C62C70300F0B56E /* Follower.swift in Sources */,
 				631C61702C6726950087624E /* GptItemInfoView.swift in Sources */,
+				63B3AB312C6A463800569A6A /* UIView+ext.swift in Sources */,
 				63B3AB2B2C6884FE00569A6A /* GPTTabBarViewController.swift in Sources */,
 				637866212C59DAB900F0B56E /* FavoritesListViewController.swift in Sources */,
-				631C61722C67AFD70087624E /* GptItemInfoViewController.swift in Sources */,
 				637866442C62F05700F0B56E /* FollowersCell.swift in Sources */,
 				6378663B2C62CD8D00F0B56E /* NetworkManager.swift in Sources */,
 				637866242C59E3AC00F0B56E /* GptButton.swift in Sources */,
+				63B3AB2F2C6A370400569A6A /* BaseNetworkViewController.swift in Sources */,
 				6378660D2C59A29800F0B56E /* SceneDelegate.swift in Sources */,
 				631C617B2C67CED80087624E /* Date+ext.swift in Sources */,
 				637866262C59E90700F0B56E /* GptTextField.swift in Sources */,
 				631C616E2C6718550087624E /* Constants.swift in Sources */,
+				63B3AB352C6A5E7100569A6A /* GptItemInfoViewController.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

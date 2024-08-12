@@ -23,15 +23,14 @@ class FollowersCell: UICollectionViewCell {
         init(){
             super.init(frame: .zero)
         }
-    
+  
    func set(follower : Follower){
         userLabel.text = follower.login
-       avatarImageView.downloadImage(from: follower.avatarUrl)
+       avatarImageView.downLoadImage(from : follower.avatarUrl)
     }
     
    private func configure(){
-        addSubview(avatarImageView)
-        addSubview(userLabel)
+        addSubviews(avatarImageView, userLabel)
        let padding :CGFloat = 8
        // As of ios 15 we dont want to pin this to contentView
        NSLayoutConstraint.activate([

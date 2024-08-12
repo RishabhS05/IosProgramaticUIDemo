@@ -27,42 +27,10 @@ extension UIViewController {
             self.present(alertVC, animated: true)
         }
     }
-    ///Show  Loading View from screen
-    func showLoadingView(){
-        containerView = UIView(frame: view.bounds)
-        containerView.backgroundColor = .systemBackground
-        containerView.alpha  = 0
-        view.addSubview(containerView)
-        UIView.animate(withDuration: 0.25 ){  containerView.alpha  = 0.8 }
-        let activityIndicator = UIActivityIndicatorView(style: .large)
-        containerView.addSubview(activityIndicator)
-        activityIndicator.translatesAutoresizingMaskIntoConstraints = false
-        
-        NSLayoutConstraint.activate([
-            activityIndicator.centerYAnchor.constraint(equalTo: view.centerYAnchor),
-            activityIndicator.centerXAnchor.constraint(equalTo: view.centerXAnchor)])
-        activityIndicator.startAnimating()
-    }
     
-    ///Remove Loading View from screen
-    func dismissLoadingView() {
-        DispatchQueue.main.async {
-            containerView.removeFromSuperview()
-            containerView = nil
-        }
-
-    }
     
-    /// Method will called to handle if no data is available for any screen after calling any api.
-    /// - Parameters:
-    ///   - message: display message to handle empty data.
-    ///   - view: the view on which the emptystateUI will populate
-    func showEmptyStateView(with message : String, in view : UIView){
-        let emptyStateView = GptEmptyStateView(message: message)
-        emptyStateView.frame = view.bounds   
-        view.addSubview(emptyStateView)
-    }
-    
+        /// Launch Safari web link inside the application without sending to safari browser
+        /// - Parameter url: url link
     func presentSafariViewController(with url : String){
         guard let url = URL(string: url) else {
             presentGptAlertOnMainThread(title: "Invalid Url", message: "The Url attached is invalid", buttonTitle: "Ok")

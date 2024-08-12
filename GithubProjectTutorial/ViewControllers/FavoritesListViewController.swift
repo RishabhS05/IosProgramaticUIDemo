@@ -7,16 +7,16 @@
 
 import UIKit
 
-class FavoritesListViewController: UIViewController {
+class FavoritesListViewController: BaseNetworkViewController {
+    
     let  tableView = UITableView()
     var favorites: [Follower] = []
     
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
-       
-        getFavorites()
+       getFavorites()
     }
-    
+
     override func viewDidLoad() {
         super.viewDidLoad()
         configureViewController()
@@ -69,7 +69,6 @@ extension FavoritesListViewController : UITableViewDelegate, UITableViewDataSour
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell  {
-        print("\n\n\n\n| \(self.favorites[indexPath.row])")
         let cell = tableView.dequeueReusableCell(withIdentifier: UIFavoriteViewCell.reuseID) as! UIFavoriteViewCell
         let favorite = self.favorites[indexPath.row]
         cell.set(favorite:favorite)
@@ -88,8 +87,8 @@ extension FavoritesListViewController : UITableViewDelegate, UITableViewDataSour
          
         PersistanceManager.updatewith(favorite: favorite, actionType: .remove){
             [weak self ] error in
-            guard let self = self else { return }
-            guard let error  = error else { return }
+            guard let self = self,
+            let error  = error else { return }
             self.presentGptAlertOnMainThread(title: "Unable to Remove", message: error.rawValue, buttonTitle: "Oops")
         }
     }

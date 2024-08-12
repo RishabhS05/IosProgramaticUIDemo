@@ -8,6 +8,7 @@
 import Foundation
 
 extension String {
+        //decodingStragy will do for us decoder.dateformaterStrategy
     func convertToDate() -> Date? {
         let dateFormater = DateFormatter()
         dateFormater.dateFormat = "yyyy-MM-dd'T'HH:mm:ssZ"

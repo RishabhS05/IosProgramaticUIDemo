@@ -14,10 +14,9 @@ class GptBodyLabel: UILabel {
         configure()
     }
     
-    init(textAlignment : NSTextAlignment){
-        super.init(frame: .zero)
+    convenience init(textAlignment : NSTextAlignment){
+        self.init(frame: .zero)
         self.textAlignment = textAlignment
-        configure()
     }
     
     required init?(coder: NSCoder) {
@@ -28,6 +27,7 @@ class GptBodyLabel: UILabel {
         textColor = .label
         font = UIFont.preferredFont(forTextStyle: .body)
         adjustsFontSizeToFitWidth = true
+        adjustsFontForContentSizeCategory = true
         minimumScaleFactor = 0.75
         lineBreakMode = .byWordWrapping
         translatesAutoresizingMaskIntoConstraints = false // to use auto layout.

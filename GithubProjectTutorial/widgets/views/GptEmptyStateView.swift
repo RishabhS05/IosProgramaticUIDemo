@@ -14,10 +14,10 @@ class GptEmptyStateView: UIView {
         super.init(frame: frame)
         configure()
     }
-    init(message : String){
-        super.init(frame: .zero)
+convenience init(message : String){
+        self.init(frame: .zero)
         messageLabel.text = message
-        configure() 
+    
     }
    required init?(coder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
@@ -25,8 +25,7 @@ class GptEmptyStateView: UIView {
      
     
     private func configure(){
-        addSubview(messageLabel)
-        addSubview(logoImageView)
+        addSubviews(messageLabel,logoImageView)
         messageLabel.numberOfLines = 3
         messageLabel.textColor = .secondaryLabel
         logoImageView.image = UIImage(named: "empty-state-logo")

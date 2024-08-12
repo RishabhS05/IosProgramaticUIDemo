@@ -7,7 +7,7 @@
 
 import Foundation
 
-class GptFollowersItemViewController : GptItemInfoViewController {
+class GptFollowersItemViewController : GptItemInfoViewController  {
     
     override func viewDidLoad() {
         super.viewDidLoad()

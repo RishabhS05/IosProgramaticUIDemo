@@ -18,10 +18,9 @@ class GptSecondoryTitleLabel: UILabel {
         fatalError("init(coder:) has not been implemented")
     }
     
-    init(fontsize : CGFloat){
-        super.init(frame: .zero)
+    convenience init(fontsize : CGFloat){
+        self.init(frame: .zero)
         font = UIFont.systemFont(ofSize: fontsize,weight: .medium)
-        configure()
     }
     private func configure(){
         textColor = .secondaryLabel

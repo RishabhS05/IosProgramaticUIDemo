@@ -56,13 +56,11 @@ enum PersistanceManager {
     }
     
     static func save(favorites: [Follower]) -> GPTError? {
-        
         do{
             let encoder  = JSONEncoder()
             let encoderFav = try encoder.encode(favorites)
             defaults.set(encoderFav, forKey: Keys.favorites)
             return nil
         } catch {return .invalidFavorite}
-        return nil
     }
 }
