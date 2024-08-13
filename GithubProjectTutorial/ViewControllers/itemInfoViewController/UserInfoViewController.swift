@@ -7,11 +7,10 @@
 
 import UIKit
 
-protocol UserInfoViewControllerDelegate: AnyObject {
-    func didTapGithubProfile(for user : User)
-    func didTapGetFolowers(for user : User)
-}
+
 class UserInfoViewController: BaseNetworkViewController {
+    let scrollView = UIScrollView()
+    let contentView = UIView()
     var username : String!
     let headerView = UIView()
     let itemView1 = UIView()
@@ -24,7 +23,18 @@ class UserInfoViewController: BaseNetworkViewController {
         super.viewDidLoad()
         configureMainView()
         getUserDetails(username: self.username)
+        configureScrollView()
         layoutUI()
+    }
+    func configureScrollView(){
+        view.addSubview(scrollView)
+        scrollView.addSubview(contentView)
+        scrollView.pinToEdges(of: view)
+        contentView.pinToEdges(of: scrollView)
+        NSLayoutConstraint.activate([
+            contentView.widthAnchor.constraint(equalTo: scrollView.widthAnchor),
+            contentView.heightAnchor.constraint(equalToConstant: 550),
+        ])
     }
     
     func configureMainView(){
@@ -37,6 +47,23 @@ class UserInfoViewController: BaseNetworkViewController {
         dismiss(animated: true)
     }
     
+    
+    
+    func  getUserDetailsV2(username : String) async {
+        
+        do {
+          let  user =  try await NetworkManagerV2.shared.getUser(username: username)
+            configureUiOnSuccess(user: user)
+        }catch {
+            if let gfError = error as? GPTError {
+                presentGptAlert(title: "ERROR", message: gfError.rawValue, buttonTitle: "Dismiss")
+            }else {
+                presentGptDefaultError()
+            }
+         dismissVC()
+        }
+        
+    }
     func getUserDetails(username : String){
         showLoadingView()
         NetworkManager.shared.getUser(username: username){ [weak self] result in
@@ -53,16 +80,10 @@ class UserInfoViewController: BaseNetworkViewController {
     }
     
     func configureUiOnSuccess(user : User) {
-        let repoVC = GptReposItemViewController(user: user)
-        repoVC.delegate = self
-        
-        let followersVC = GptFollowersItemViewController(user: user)
-        followersVC.delegate = self
-        
         self.add(childVC: GptUserInfoHeaderViewController(user: user), to: self.headerView)
-        self.add(childVC:repoVC, to: self.itemView1)
-        self.add(childVC: followersVC, to: self.itemView2)
-        self.dateLabel.text = "Github since \(user.createdAt.convertToMonthYear())"
+        self.add(childVC:GptReposItemViewController(user: user,delegate : self), to: self.itemView1)
+        self.add(childVC: GptFollowersItemViewController(user: user, delegate: self ), to: self.itemView2)
+        self.dateLabel.text = "Github since \(user.createdAt.convertWithDefaultToMonthYear())"
     }
     
     func add(childVC : UIViewController, to containerView : UIView){
@@ -77,14 +98,14 @@ class UserInfoViewController: BaseNetworkViewController {
         itemsViews = [ headerView, itemView1, itemView2, dateLabel ]
         for item in itemsViews {
             item.translatesAutoresizingMaskIntoConstraints = false
-            view.addSubview(item)
+            contentView.addSubview(item)
             NSLayoutConstraint.activate([
-                    item.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: padding),
-                    item.trailingAnchor.constraint(equalTo: view.trailingAnchor,constant: -padding)
+                    item.leadingAnchor.constraint(equalTo: contentView.leadingAnchor, constant: padding),
+                    item.trailingAnchor.constraint(equalTo: contentView.trailingAnchor,constant: -padding)
                 ])
         }
         NSLayoutConstraint.activate([
-            headerView.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor),
+            headerView.topAnchor.constraint(equalTo: contentView.topAnchor),
             headerView.heightAnchor.constraint(equalToConstant: 180),
             
             itemView1.topAnchor.constraint(equalTo: headerView.bottomAnchor,constant: padding),
@@ -100,18 +121,18 @@ class UserInfoViewController: BaseNetworkViewController {
     
 }
 
-extension UserInfoViewController : UserInfoViewControllerDelegate {
-    func didTapGithubProfile(for user: User) {
+extension UserInfoViewController : UserGoToGithubDelegate, UserGetFollowers {
+    func didTapToGithubProfile(for user: User) {
         guard let url = URL(string: user.htmlUrl) else {
-            presentGptAlertOnMainThread(title: "Invalid Url", message: "The Url attached is invalid", buttonTitle: "Ok")
+            presentGptAlert(title: "Invalid Url", message: "The Url attached is invalid", buttonTitle: "Ok")
             return
         }
         presentSafariViewController(with: user.htmlUrl)
     }
     
-    func didTapGetFolowers(for user: User) {
+    func didTapToGetFollowers(for user: User) {
         guard user.followers != 0 else {
-                  presentGptAlertOnMainThread(title: "No Followers", message: "\(user.login) has no followers.", buttonTitle: "So Sad")
+                  presentGptAlert(title: "No Followers", message: "\(user.login) has no followers.", buttonTitle: "So Sad")
                   return
               }
               delegate.didRequestFollowers(for: user.login)

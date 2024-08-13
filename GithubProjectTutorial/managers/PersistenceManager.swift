@@ -7,34 +7,28 @@
 
 import Foundation
 
-enum PersistanceActionType {
-    case add ,remove
-}
-enum PersistanceManager {
-    static private let defaults = UserDefaults.standard
-
-    enum Keys{
-        static let favorites = "favorites"
-        
-    }
+enum PersistenceActionType { case add ,remove }
+enum PersistenceManager {
     
-    static func updatewith(favorite : Follower, actionType : PersistanceActionType, completed : @escaping(GPTError?)-> Void){
+    static private let defaults = UserDefaults.standard
+    enum Keys{static let favorites = "favorites"}
+    
+    static func updatewith(favorite : Follower, actionType : PersistenceActionType, completed : @escaping(GPTError?)-> Void){
         retrieveFovorites{ result in
             switch result {
-                case .success(let favorites):
-                    var retrievedFav = favorites
+                case .success(var favorites):
                     
                     switch actionType {
                         case .add :
-                            guard !retrievedFav.contains(favorite) else {
+                            guard !favorites.contains(favorite) else {
                                 completed(.alreadyFav)
                                 return
                             }
-                            retrievedFav.append(favorite)
+                            favorites.append(favorite)
                         case .remove:
-                            retrievedFav.removeAll{$0.login == favorite.login}
+                            favorites.removeAll{$0.login == favorite.login}
                     }
-                    completed(save(favorites: retrievedFav))
+                    completed(save(favorites: favorites))
                 case .failure(let error) : completed(error)
             }
         }
@@ -42,9 +36,11 @@ enum PersistanceManager {
     }
     
     static func retrieveFovorites(completed : @escaping (Result<[Follower],GPTError>)-> Void){
-        guard let favData = defaults.object(forKey: Keys.favorites)  as? Data  else {completed(.success([]))
-            return }
-        
+        guard let favData = defaults.object(forKey: Keys.favorites)  as? Data  else{
+            completed(.success([]))
+            return
+        }
+    
         do {
             let decoder = JSONDecoder()
             let favorites = try decoder.decode([Follower].self, from: favData)

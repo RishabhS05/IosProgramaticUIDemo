@@ -31,13 +31,22 @@ class GptImageView: UIImageView {
 extension GptImageView {
     
      public func downLoadImage(from url :String) {
-         
-        NetworkManager.shared.downloadImage(from: url){
-            [weak self ] image  in
-            guard let self = self else { return }
-            DispatchQueue.main .async {
-                self.image = image
-            }
-        }
+         Task {
+                let image = await NetworkManagerV2.shared.downloadImage(from: url)
+                     DispatchQueue.main .async {
+                         self.image = image
+                     }
+         }
     }
+    
+    public func downLoadImageOld(from url :String) {
+        
+       NetworkManager.shared.downloadImage(from: url){
+           [weak self ] image  in
+           guard let self = self else { return }
+           DispatchQueue.main .async {
+               self.image = image
+           }
+       }
+   }
 }

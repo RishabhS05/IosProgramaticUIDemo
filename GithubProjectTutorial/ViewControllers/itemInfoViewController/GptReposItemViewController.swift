@@ -7,7 +7,24 @@
 
 import UIKit
 
+
+
+protocol UserGoToGithubDelegate: AnyObject {
+    func didTapToGithubProfile(for user : User)
+}
+
 class GptReposItemViewController : GptItemInfoViewController {
+    
+    weak var  delegate : UserGoToGithubDelegate!
+    
+    init(user : User, delegate: UserGoToGithubDelegate!) {
+        super.init(user: user)
+        self.delegate = delegate
+    }
+    
+    required init?(coder: NSCoder) {
+        fatalError("init(coder:) has not been implemented")
+    }
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -20,6 +37,6 @@ class GptReposItemViewController : GptItemInfoViewController {
         actionButton.set(backgroundColor: .systemPurple, title: "Github Profile")
     }
     override func actionButtonTapped() {
-        delegate.didTapGithubProfile(for: user)
+        delegate.didTapToGithubProfile(for: user)
     }
 }

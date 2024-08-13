@@ -40,7 +40,7 @@ class FavoritesListViewController: BaseNetworkViewController {
     }
     
     func  getFavorites(){
-        PersistanceManager.retrieveFovorites{ [weak self]
+        PersistenceManager.retrieveFovorites{ [weak self]
             result in
             guard let self = self else { return }
             switch result {
@@ -82,14 +82,19 @@ extension FavoritesListViewController : UITableViewDelegate, UITableViewDataSour
     
     func tableView(_ tableView: UITableView, commit editingStyle: UITableViewCell.EditingStyle, forRowAt indexPath: IndexPath) {
         guard editingStyle == .delete else { return }
-        let favorite = favorites.remove(at: indexPath.row)
-        tableView.deleteRows(at: [indexPath], with: .left)
-         
-        PersistanceManager.updatewith(favorite: favorite, actionType: .remove){
+        let favorite = favorites[indexPath.row]
+        PersistenceManager.updatewith(favorite: favorite, actionType: .remove){
             [weak self ] error in
-            guard let self = self,
-            let error  = error else { return }
-            self.presentGptAlertOnMainThread(title: "Unable to Remove", message: error.rawValue, buttonTitle: "Oops")
+            guard let self else { return }
+            guard let error else {
+                self.favorites.remove(at: indexPath.row)
+                tableView.deleteRows(at: [indexPath], with: .left)
+                if favorites.isEmpty {
+                    self.showEmptyStateView(with: "No Favorites?\n Add the followers as yor favorites.", in: self.view)
+                }
+                return
+            }
+            presentGptAlert(title: "Unable to Remove", message: error.rawValue, buttonTitle: "Oops")
         }
     }
 }

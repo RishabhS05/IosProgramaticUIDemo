@@ -12,6 +12,7 @@ class NetworkManager {
     private let BASE_URL = "https://api.github.com/users/"
     let imageCache = NSCache<NSString, UIImage>()
     
+    //singleton class
     private init() {}
     
         /// Call get followers  of the current users api
@@ -35,7 +36,7 @@ class NetworkManager {
                 completed(.failure(.invalidResponse))
                 return
             }
-            guard let data = data else {
+            guard let data else {
                 completed(.failure(.serverDataInvalid))
                 return
             }
@@ -93,6 +94,12 @@ class NetworkManager {
         }
         task.resume()
     }
+    
+    
+        /// Network call to download image for avatar and also caching it
+        /// - Parameters:
+        ///   - url: url to retrieve it
+        ///   - completed: Callback after donload image
     
     func downloadImage(from url : String , completed : @escaping(UIImage?) -> Void){
         

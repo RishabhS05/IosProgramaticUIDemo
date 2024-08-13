@@ -8,6 +8,8 @@
 import UIKit
 
 class GptUserInfoHeaderViewController: UIViewController {
+    
+
     let userAvatarImageView = GptImageView(frame: .zero)
     let usernameLebel = GptTitleLabel(textAlignment: .left, fontSize: 34)
     let nameLabel = GptSecondoryTitleLabel(fontsize: 18)
@@ -29,6 +31,7 @@ class GptUserInfoHeaderViewController: UIViewController {
         configureView()
         configureUIElements()
     }
+   
     func configureUIElements(){
         userAvatarImageView.downLoadImage(from : user.avatarUrl)
         usernameLebel.text = user.login

@@ -5,7 +5,7 @@
 //  Created by Rishabh Shrivastava on 02/08/24.
 //   
 
-protocol FollowersViewDelegate  : class {
+protocol FollowersViewDelegate  : AnyObject {
     func  didRequestFollowers(for username : String)
 }
 
@@ -53,11 +53,36 @@ class FollowersViewController: BaseNetworkViewController {
     func configureViewController(){
         view.backgroundColor = .systemBackground
         navigationController?.navigationBar.prefersLargeTitles = true
-        let addButton = UIBarButtonItem(barButtonSystemItem: .add, target: self, action: #selector(addToFav))
+        let addButton = UIBarButtonItem(barButtonSystemItem: .add, target: self, action: #selector(addToFavV2))
         navigationItem.rightBarButtonItem = addButton
     }
     
-                                        
+    @objc func addToFavV2() {
+        showLoadingView()
+        Task{
+            do{
+                let user  = try await NetworkManagerV2.shared.getUser(username: username)
+                let favorite = Follower(login: user.login,avatarUrl: user.avatarUrl)
+                PersistenceManager.updatewith(favorite: favorite, actionType: .add ){ [ weak self] err in
+                    guard let self else { return }
+                    guard let err else {
+                        self.presentGptAlertOnMainThread(title: "Success", message: "You have successfully added \(user.login) to your favorite list.", buttonTitle: "Ok")
+                        return
+                    }
+                    self.presentGptAlertOnMainThread(title: "Hi 😄", message: err.rawValue, buttonTitle: "Ok")
+                }
+            }catch{
+                if let gfError =  error as? GPTError {
+                    presentGptAlert(title:"Something went wrong!!", message: gfError.rawValue, buttonTitle: "Ok")
+                } else {
+                    presentGptDefaultError()
+                }
+            }
+        }
+     dismissLoadingView()
+   }
+    
+         //Old Api call with NetworkManager
  @objc func addToFav(){
      showLoadingView()
      NetworkManager.shared.getUser(username: username){  [weak self]result in
@@ -67,15 +92,15 @@ class FollowersViewController: BaseNetworkViewController {
              case .success(let user):
                  let favorite = Follower(login: user.login , avatarUrl: user.avatarUrl)
                  
-                 PersistanceManager.updatewith(favorite: favorite, actionType: .add ){ [weak self] err in
+                 PersistenceManager.updatewith(favorite: favorite, actionType: .add ){ [weak self] err in
                    
                      guard let self = self else { return }
                      
                      guard let err = err else {
-                         self.presentGptAlertOnMainThread(title: "Success", message: "You have successfully added \(user.login) to your favorite list.", buttonTitle: "Ok")
+                         self.presentGptAlert(title: "Success", message: "You have successfully added \(user.login) to your favorite list.", buttonTitle: "Ok")
                          return
                      }
-                     self.presentGptAlertOnMainThread(title: "Hi 😄", message: err.rawValue, buttonTitle: "Ok")
+                     self.presentGptAlert(title: "Hi 😄", message: err.rawValue, buttonTitle: "Ok")
                  }
     
              case .failure(let err):
@@ -83,7 +108,7 @@ class FollowersViewController: BaseNetworkViewController {
                  
          }
      }
-        }
+}
     
     func configureDataSource(){
         dataSource = UICollectionViewDiffableDataSource<Section, Follower>(collectionView: collectionView, cellProvider: {
@@ -127,7 +152,6 @@ class FollowersViewController: BaseNetworkViewController {
     ///  get Follower Api call initated
     /// - Parameter page: Page number is passed for pagination
     func getFollowers(page : Int){ // api call
-        
         showLoadingView()
         isLoadingMoreFollowers = true
         NetworkManager.shared.getFollowers(for: username, page: page){ [weak self]
@@ -151,6 +175,41 @@ class FollowersViewController: BaseNetworkViewController {
         }
         isLoadingMoreFollowers = false
     }
+    
+        ///  get Follower Api call initated
+        /// - Parameter page: Page number is passed for pagination
+        func getFollowersV2(page : Int){ // api call
+            showLoadingView()
+            isLoadingMoreFollowers = true
+            Task{
+                do{
+                    followers = try await NetworkManagerV2.shared.getFollowers(for: username, page: page)
+                    if followers.count < 100 { hasMoreFollowers = false }
+                    followers.append(contentsOf: followers)
+                    if  followers.isEmpty{
+                    let message = "This user doesn't have any followers Go follow then 😀"
+                    showEmptyStateView(with: message, in: self.view)
+                    }
+                    updateData(on : self.followers)
+                    setSearchControllerLabel()
+                }
+                catch {
+                    if let gfError = error as? GPTError {
+                       presentGptAlert(title: "ERROR", message: gfError.rawValue, buttonTitle: "OK")
+                    } else {
+                        presentGptDefaultError()
+                    }
+                }
+                isLoadingMoreFollowers = false
+                dismissLoadingView()
+            }
+
+        }
+        
+    
+    
+    
+    
     
     func configureCollectionView(){
         collectionView = UICollectionView(frame: view.bounds, collectionViewLayout: Uihelper.create3columnFlowLayput(in : view))

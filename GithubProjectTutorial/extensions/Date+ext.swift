@@ -14,4 +14,8 @@ extension Date{
         dateFormater.dateFormat = "MMM yyyy"
         return dateFormater.string(from: self)
     }
+    
+    func convertWithDefaultToMonthYear() -> String {
+        return formatted(.dateTime.month(.wide).year())
+    }
 }

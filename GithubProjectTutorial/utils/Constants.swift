@@ -8,23 +8,25 @@
 import UIKit
 
 enum SfSymbols {
-    static let location   = UIImage (systemName:"mappin.and.ellipse" )
-    static let repos      = UIImage (systemName: "folder" )
-    static let gist       = UIImage (systemName: "text.alignleft" )
-    static let followers  = UIImage (systemName: "heart" )
-    static let followings = UIImage (systemName: "person.2")
+    static let location               = UIImage (systemName:"mappin.and.ellipse" )
+    static let repos                  = UIImage (systemName: "folder" )
+    static let gist                   = UIImage (systemName: "text.alignleft" )
+    static let followers              = UIImage (systemName: "heart" )
+    static let followings             = UIImage (systemName: "person.2")
+    
 }
 enum Images {
-    static let ghLogo           = "gh-logo"
-    static let placeholderImage = "avatar-placeholder"
+    static let ghLogo                 = "gh-logo"
+    static let placeholderImage       = "avatar-placeholder"
+    static let emptyStatePlaceHolder  = "empty-state-logo"
 }
 
  // handling small screen
 enum ScreenSize{
-    static let width     = UIScreen.main.bounds.size.width
-    static let height    = UIScreen.main.bounds.size.height
-    static let maxLength = max(ScreenSize.width, ScreenSize.height)
-    static let minLength = min(ScreenSize.width, ScreenSize.height)
+    static let width                  = UIScreen.main.bounds.size.width
+    static let height                 = UIScreen.main.bounds.size.height
+    static let maxLength              = max(ScreenSize.width, ScreenSize.height)
+    static let minLength              = min(ScreenSize.width, ScreenSize.height)
 }
 
 enum DeviceType {
