@@ -12,7 +12,7 @@ class GptAlertViewController: UIViewController {
     let containerView  = GPTViewBackground()
     let titleLabel = GptTitleLabel(textAlignment: .center, fontSize: 20)
     let messageLabel = GptBodyLabel(textAlignment: .center)
-    let actionButton = GptButton(backgroundColor: .systemPink, title:    "Ok")
+    let actionButton = GptButton(backgroundColor: .systemPink, title:    "Ok", systemName: SfSymbols.ok)
     var  alertTitle : String?
     var message : String?
     var buttonTitle : String?

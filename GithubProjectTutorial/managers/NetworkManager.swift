@@ -11,9 +11,12 @@ class NetworkManager {
     static let shared = NetworkManager()
     private let BASE_URL = "https://api.github.com/users/"
     let imageCache = NSCache<NSString, UIImage>()
-    
+    let decoder = JSONDecoder()
     //singleton class
-    private init() {}
+    private init() {
+        decoder.keyDecodingStrategy = .convertFromSnakeCase
+        decoder.dateDecodingStrategy = .iso8601
+    }
     
         /// Call get followers  of the current users api
         /// - Parameters:
@@ -41,10 +44,7 @@ class NetworkManager {
                 return
             }
             do {
-                let decoder = JSONDecoder()
-                decoder.keyDecodingStrategy = .convertFromSnakeCase
-                decoder.dateDecodingStrategy = .iso8601
-                let followers = try decoder.decode([Follower].self, from:data)
+                let followers = try self.decoder.decode([Follower].self, from:data)
                 completed(.success(followers))
             }
             catch{
@@ -80,10 +80,7 @@ class NetworkManager {
                 return
             }
             do {
-                let decoder = JSONDecoder()
-                decoder.keyDecodingStrategy = .convertFromSnakeCase
-                decoder.dateDecodingStrategy = .iso8601
-                let user = try decoder.decode(User.self, from: data)
+                let user = try self.decoder.decode(User.self, from: data)
                 completed(.success(user))
             }
             catch  {

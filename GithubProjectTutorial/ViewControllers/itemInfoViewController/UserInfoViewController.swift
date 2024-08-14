@@ -22,7 +22,7 @@ class UserInfoViewController: BaseNetworkViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         configureMainView()
-        getUserDetails(username: self.username)
+        getUserDetailsV2(username: self.username)
         configureScrollView()
         layoutUI()
     }
@@ -49,18 +49,19 @@ class UserInfoViewController: BaseNetworkViewController {
     
     
     
-    func  getUserDetailsV2(username : String) async {
-        
-        do {
-          let  user =  try await NetworkManagerV2.shared.getUser(username: username)
-            configureUiOnSuccess(user: user)
-        }catch {
-            if let gfError = error as? GPTError {
-                presentGptAlert(title: "ERROR", message: gfError.rawValue, buttonTitle: "Dismiss")
-            }else {
-                presentGptDefaultError()
+    func  getUserDetailsV2(username : String) {
+        Task {
+            do {
+                let  user =  try await NetworkManagerV2.shared.getUser(username: username)
+                configureUiOnSuccess(user: user)
+            }catch {
+                if let gfError = error as? GPTError {
+                    presentGptAlert(title: "ERROR", message: gfError.rawValue, buttonTitle: "Dismiss")
+                }else {
+                    presentGptDefaultError()
+                }
+                dismissVC()
             }
-         dismissVC()
         }
         
     }
@@ -123,7 +124,7 @@ class UserInfoViewController: BaseNetworkViewController {
 
 extension UserInfoViewController : UserGoToGithubDelegate, UserGetFollowers {
     func didTapToGithubProfile(for user: User) {
-        guard let url = URL(string: user.htmlUrl) else {
+        guard URL(string: user.htmlUrl) != nil else {
             presentGptAlert(title: "Invalid Url", message: "The Url attached is invalid", buttonTitle: "Ok")
             return
         }

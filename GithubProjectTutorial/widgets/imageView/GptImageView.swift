@@ -33,9 +33,7 @@ extension GptImageView {
      public func downLoadImage(from url :String) {
          Task {
                 let image = await NetworkManagerV2.shared.downloadImage(from: url)
-                     DispatchQueue.main .async {
-                         self.image = image
-                     }
+                self.image = image
          }
     }
     

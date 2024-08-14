@@ -22,7 +22,19 @@ class FavoritesListViewController: BaseNetworkViewController {
         configureViewController()
         configureTableView()
     }
+    override func updateContentUnavailableConfiguration(using state: UIContentUnavailableConfigurationState) {
+        if favorites.isEmpty{
+            var config  = UIContentUnavailableConfiguration.empty()
+            config.image = .init(systemName: SfSymbols.star)
+            config.text = "No Favorites"
+            config.secondaryText = "Add a favorite on the follower list screen"
+            contentUnavailableConfiguration = config
+        }else {
+            contentUnavailableConfiguration = nil
+        }
+    }
 
+    
     func configureViewController(){
         view.backgroundColor = .systemBackground
         title = "Favorites"
@@ -46,16 +58,13 @@ class FavoritesListViewController: BaseNetworkViewController {
             switch result {
                 case .success(let favorites):
                     print(favorites)
-                   
-                    if favorites.isEmpty {
-                        showEmptyStateView(with: "No Favorites?\n Add the followers as yor favorites.", in: self.view)
-                    } else {
                         self.favorites = favorites
+                    setNeedsUpdateContentUnavailableConfiguration()
                         DispatchQueue.main.async {
                             self.tableView.reloadData()
                             self.view.bringSubviewToFront(self.tableView)
                         }
-                    }
+            
                 case .failure(let error):
                     self.presentGptAlertOnMainThread(title: "Something went wrong", message: error.rawValue, buttonTitle: "Ok")
             }
@@ -89,12 +98,14 @@ extension FavoritesListViewController : UITableViewDelegate, UITableViewDataSour
             guard let error else {
                 self.favorites.remove(at: indexPath.row)
                 tableView.deleteRows(at: [indexPath], with: .left)
-                if favorites.isEmpty {
-                    self.showEmptyStateView(with: "No Favorites?\n Add the followers as yor favorites.", in: self.view)
-                }
+                setNeedsUpdateContentUnavailableConfiguration()
                 return
             }
             presentGptAlert(title: "Unable to Remove", message: error.rawValue, buttonTitle: "Oops")
         }
     }
+}
+
+#Preview{
+    FavoritesListViewController()
 }

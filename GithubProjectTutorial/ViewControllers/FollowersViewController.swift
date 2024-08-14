@@ -30,7 +30,7 @@ class FollowersViewController: BaseNetworkViewController {
         configureViewController()
         configureSearchController()
         configureCollectionView()
-        getFollowers(page: page)
+        getFollowersV2(page: page)
         configureDataSource()
     }
     
@@ -47,6 +47,20 @@ class FollowersViewController: BaseNetworkViewController {
         navigationController?.setNavigationBarHidden(false, animated: true)
     }
     
+    override func updateContentUnavailableConfiguration(using state: UIContentUnavailableConfigurationState) {
+        if followers.isEmpty && !isLoadingMoreFollowers  {
+            var config  = UIContentUnavailableConfiguration.empty()
+            config.image = .init(systemName: SfSymbols.personSlash)
+            config.text = "No Followers"
+            config.secondaryText = "\(String(describing: username)) Has no followers. Please Go and follow."
+            contentUnavailableConfiguration = config
+        } else if isSearching && filteredFollowers.isEmpty{
+            contentUnavailableConfiguration = UIContentUnavailableConfiguration.search()
+        }
+        else {
+            contentUnavailableConfiguration = nil
+        }
+    }
     
     
     /// configuring Initial UIViewController
@@ -109,6 +123,12 @@ class FollowersViewController: BaseNetworkViewController {
          }
      }
 }
+    func updateUI(on followers : [Follower]){
+        if followers.count < 100 { hasMoreFollowers = false }
+        self.followers.append(contentsOf: followers)
+        updateData(on: followers)
+        setSearchControllerLabel()
+    }
     
     func configureDataSource(){
         dataSource = UICollectionViewDiffableDataSource<Section, Follower>(collectionView: collectionView, cellProvider: {
@@ -136,17 +156,17 @@ class FollowersViewController: BaseNetworkViewController {
     }
     
     func updateData(on followers : [Follower]){
-        var snapshot = NSDiffableDataSourceSnapshot<Section, Follower>()
-        snapshot.appendSections([.main])
-        snapshot.appendItems(followers)
-//      runing in main thread
-//        DispatchQueue.main.async{
-//            self.dataSource.apply(snapshot,animatingDifferences: true)
-//        }
-        // below code : - According to SAllen its will give us worning on running in background thread
-        // work fine without any warning.
-        self.dataSource.apply( snapshot,animatingDifferences: true)
-      
+            var snapshot = NSDiffableDataSourceSnapshot<Section, Follower>()
+             snapshot.appendSections([.main])
+             snapshot.appendItems(followers)
+                //      runing in main thread
+                //        DispatchQueue.main.async{
+                //            self.dataSource.apply(snapshot,animatingDifferences: true)
+                //        }
+                // below code : - According to SAllen its will give us worning on running in background thread
+                // work fine without any warning.
+            self.dataSource.apply( snapshot,animatingDifferences: true)
+        
     }
     
     ///  get Follower Api call initated
@@ -183,15 +203,11 @@ class FollowersViewController: BaseNetworkViewController {
             isLoadingMoreFollowers = true
             Task{
                 do{
-                    followers = try await NetworkManagerV2.shared.getFollowers(for: username, page: page)
-                    if followers.count < 100 { hasMoreFollowers = false }
-                    followers.append(contentsOf: followers)
-                    if  followers.isEmpty{
-                    let message = "This user doesn't have any followers Go follow then 😀"
-                    showEmptyStateView(with: message, in: self.view)
-                    }
-                    updateData(on : self.followers)
-                    setSearchControllerLabel()
+                    let followers = try await NetworkManagerV2.shared.getFollowers(for: username, page: page)
+                    print(followers)
+                    updateUI(on: followers)
+                    setNeedsUpdateContentUnavailableConfiguration()
+
                 }
                 catch {
                     if let gfError = error as? GPTError {
@@ -235,7 +251,7 @@ extension FollowersViewController : UICollectionViewDelegate {
         let frameHeight = scrollView.frame.size.height
         if offsetY > contentHeight - frameHeight && hasMoreFollowers && !isLoadingMoreFollowers  {
             page += 1
-            getFollowers(page: page)
+            getFollowersV2(page: page)
             print("Calling Api for next")
         }
     }
@@ -263,6 +279,7 @@ extension FollowersViewController : UISearchResultsUpdating  {
         }
         filteredFollowers=followers.filter{$0.login.lowercased().contains(filter.lowercased())}
         updateData(on: filteredFollowers)
+        setNeedsUpdateContentUnavailableConfiguration()
     }
 }
 
@@ -271,6 +288,10 @@ extension FollowersViewController : FollowersViewDelegate{
         self.username = username
         title = username
         resetScreen()
-        getFollowers(page: 1)
+        getFollowersV2(page: 1)
     }
+}
+
+#Preview {
+    FollowersViewController(username: "SAllen0400")
 }

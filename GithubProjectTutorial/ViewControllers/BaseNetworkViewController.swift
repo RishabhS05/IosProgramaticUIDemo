@@ -47,6 +47,7 @@ class BaseNetworkViewController: UIViewController {
         /// - Parameters:
         ///   - message: display message to handle empty data.
         ///   - view: the view on which the emptystateUI will populate
+        ///  old way of doing
         func showEmptyStateView(with message : String, in view : UIView){
             let emptyStateView = GptEmptyStateView(message: message)
             emptyStateView.frame = view.bounds

@@ -28,12 +28,14 @@ class NetworkManagerV2 {
     
     func getFollowers(for username : String, page: Int ) async throws -> [Follower] {
         let endpoint = BASE_URL + "\(username)/followers?per_page=100&page=\(page)"
+    
         guard let url = URL(string : endpoint) else { throw GPTError.usernameInvalid }
         let (data ,response ) = try await URLSession.shared.data(from: url)
-        guard let response = response as? HTTPURLResponse, response.statusCode == 200 else {
+        guard let response = response as? HTTPURLResponse, response.statusCode == 200
+        else   {
             throw GPTError.invalidResponse
         }
-        do { return try decoder.decode([Follower].self, from:data) }
+        do { return try decoder.decode([Follower].self, from: data) }
         catch{
             throw   GPTError.serverDataInvalid
         }
@@ -53,13 +55,14 @@ class NetworkManagerV2 {
         }
         let (data , response ) = try await URLSession.shared.data(from : url)
         
-        guard let response = response as? HTTPURLResponse, response.statusCode == 200 else {
+        guard let response = response as? HTTPURLResponse, response.statusCode == 200 else{
             throw GPTError.invalidResponse
         }
         do {
-            return try decoder.decode(User.self, from: data)
+            return try self.decoder.decode(User.self, from: data)
         }
         catch  {
+            
             throw GPTError.serverDataInvalid
         }
     }
@@ -85,5 +88,6 @@ class NetworkManagerV2 {
         } catch {
             return nil
         }
+       
     }
 }

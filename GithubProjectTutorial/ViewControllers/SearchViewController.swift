@@ -11,7 +11,7 @@ class SearchViewController: UIViewController {
 
     let logoImageView = UIImageView()
     let usernameTextfield =  GptTextField()
-    let callToActionButton = GptButton(backgroundColor : .systemGreen, title : "Get Followers")
+    let callToActionButton = GptButton(backgroundColor : .systemGreen, title : "Get Followers", systemName: SfSymbols.followersLabel)
     var isUsernameEntered : Bool { return !usernameTextfield.text!.isEmpty }
     var logoImageViewTopConstraint : NSLayoutConstraint!
     override func viewDidLoad() {
@@ -95,4 +95,8 @@ extension SearchViewController : UITextFieldDelegate {
         followerListCall()
         return true
     }
+}
+
+#Preview {
+    SearchViewController()
 }

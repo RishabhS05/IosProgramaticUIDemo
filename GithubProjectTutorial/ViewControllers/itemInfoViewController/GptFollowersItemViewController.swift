@@ -32,7 +32,7 @@ class GptFollowersItemViewController : GptItemInfoViewController  {
     private func configureItems(){
         itemInfoViewTwo.setItemInfoType(itemInfoType: .followers, withCount: user.followers)
         itemInfoViewOne.setItemInfoType(itemInfoType: .following, withCount: user.following)
-        actionButton.set(backgroundColor: .systemGreen, title: "Git Followers")
+        actionButton.set(color : .systemGreen, title: "Git Followers",systemName: SfSymbols.followersLabel)
     }
     override func actionButtonTapped() {
         delegate.didTapToGetFollowers(for: user)
