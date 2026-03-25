@@ -16,7 +16,6 @@
  
  
  
- 
  // docs
  Every time you create a new instance of a class, ARC allocates a chunk of memory to store information about that instance. This memory holds information about the type of the instance, together with the values of any stored properties associated with that instance.
  
@@ -38,3 +37,64 @@
  
  इसे संभव बनाने के लिए, जब भी आप किसी संपत्ति, स्थिरांक, या चर को एक वर्ग उदाहरण निर्दिष्ट करते हैं, तो वह संपत्ति, स्थिरांक, या चर उदाहरण के लिए एक मजबूत संदर्भ बनाता है। संदर्भ को "मजबूत" संदर्भ कहा जाता है क्योंकि यह उस उदाहरण पर मजबूत पकड़ रखता है, और जब तक वह मजबूत संदर्भ बना रहता है, तब तक उसे हटाए जाने की अनुमति नहीं देता है।
  */
+// ARC in Action
+
+import Foundation
+class Person {
+    var name : String
+    var address: Apartment?
+    init (name : String){
+        self.name = name
+        print("My Name is \(name)")
+    }
+    deinit {
+        print("deinit \(name) - dead")
+    }
+}
+
+class Apartment {
+   //weak  var name : Person?
+    var name :Person?
+    var address: String
+    init (address : String){
+        self.address = address
+        print("Apartment \(address) is init")
+    }
+    deinit { print("Apartment \(address) is being deinitialized") }
+}
+
+func arcCount(){
+    var ref1: Person? = Person(name: "Rishabh")
+    var ref2 : Person?  = nil
+    var ref3 : Person?  = nil
+    ref2 = ref1
+    ref3 = ref1
+    print("count \(CFGetRetainCount(ref1) ) ref1 : \(ref1.self)")
+    ref1 = nil
+    print(CFGetRetainCount(ref2))
+    ref2 = nil
+    print(CFGetRetainCount(ref3))
+    ref3 = nil
+}
+
+func weakReferenceDemo(){
+    var ref4: Person? = Person(name: "Anuj")
+    var apartment : Apartment? = Apartment(address: "402A")
+    apartment?.name = ref4
+    ref4?.address = apartment
+    // deinit will not call of any person and Apartment as it has a strong reference in cyclic manner.
+    // causes memory leak
+    apartment = nil
+    ref4 = nil
+    // to fix this name weak reference like following
+    // add weak keyword before name variable in Apartment class
+
+    /**
+     now output will be as follows
+
+    Apartment 402A is being deinitialized
+    deinit Rishabh - dead
+     
+    */
+}
+
