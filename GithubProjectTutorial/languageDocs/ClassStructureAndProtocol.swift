@@ -16,10 +16,10 @@ protocol BaseUser {
     func firstName() -> String
 }
 
-struct User2 : BaseUser,Equatable {
+struct User2 : BaseUser, Equatable {
     var name : String
     var age : Int
-    var  x : Character
+    var x : Character
     
     func firstName() -> String {
         return name
@@ -28,16 +28,18 @@ struct User2 : BaseUser,Equatable {
 
 
 func call1(){
-    let rishabh = User2(name : "Rishabh", age : 32,x: "R")
+    let rishabh = User2(name : "Rishabh", age : 32, x: "R")
     var anuj = rishabh
     anuj.age = 23
     print("rishabh \(rishabh.age) \(rishabh.x)")
     print("anuj \(anuj.age) \(anuj.x)")
     print("\(anuj == rishabh)")
 }
+
 /*
  Classes
  - classes are refrence type
+ - Strong reference in heap memory by default.
  - inherit other class and protocols.
  */
 class Base {
@@ -100,6 +102,7 @@ class Micromax : PhonePro{
         
     }
 }
+
 func call2(){
     var micromax = Micromax(name: "micromax v1", company: "micromax")
     print(micromax.company)

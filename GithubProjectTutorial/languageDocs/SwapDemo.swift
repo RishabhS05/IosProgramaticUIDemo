@@ -20,12 +20,6 @@ func callMe(index : Int){
 
 //callMe(index: 5) function calling
 
-
-
-struct Character{
-    var name : String?
-    var id : String?
-}
 func loops (){
     //classic for loop
     print("Classic Loops")
